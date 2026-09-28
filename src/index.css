@@ -1,0 +1,244 @@
+@import "tailwindcss";
+
+:root {
+  --color-dark: #1a0810;
+  --color-dark3: #2c1020;
+  --color-bg-top: #200a14;
+  --color-bg-mid: #0e0408;
+  --color-bg-deep: #060204;
+
+  --color-gold: #e8b020;
+  --color-gold-light: #f8cc40;
+  --color-gold-dim: #9a7010;
+  --color-gold-accent: #d09818;
+  --color-gold-border: #e8b02033;
+  --color-gold-border-md: #e8b020ad;
+  --color-gold-border-sm: #e8b0206b;
+  --color-gold-bracket: #e8b02080;
+  --color-gold-line: #e8b02099;
+  --color-gold-line-md: #e8b0208c;
+
+  --color-gold-glow-03: #e8b02017;
+  --color-gold-glow-04: #e8b02021;
+  --color-gold-glow-05: #e8b0201a;
+  --color-gold-glow-06: #e8b02014;
+  --color-gold-glow-08: #e8b0202b;
+  --color-gold-glow-10: #e8b02029;
+  --color-gold-glow-16: #e8b02038;
+  --color-gold-glow-20: #e8b02042;
+  --color-gold-glow-25: #e8b02047;
+  --color-gold-glow-35: #e8b02085;
+  --color-gold-glow-40: #e8b0206b;
+  --color-gold-glow-65: #e8b020ad;
+  --color-gold-shimmer: #e8b02038;
+
+  --color-cream: #fff8ee;
+  --color-cream-faint: #e8b0204d;
+  --color-muted: #e8c078;
+  --color-name-text: #fff;
+
+  --color-overlay-base: #040103;
+  --color-overlay-photo: #0a030661;
+  --color-surface: #0e04088c;
+  --color-surface-xs: #0e04080d;
+  --color-surface-sm: #0e040833;
+  --color-surface-2xs: #0e040814;
+  --color-surface-md: #0e040873;
+  --color-surface-lg: #0e0408b3;
+  --color-surface-content: #0e0408ad;
+  --color-surface-hover: #0e040847;
+  --color-surface-dark: #0e0408bf;
+  --color-white-03: #ffffff08;
+  --color-black-42: #0000006b;
+
+  --font-display: "Cormorant Garamond", serif;
+  --font-cinzel: "Cinzel", serif;
+  --font-body: "Raleway", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at top, var(--color-bg-top) 0%, var(--color-bg-mid) 50%, var(--color-bg-deep) 100%);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+input,
+textarea {
+  cursor: text;
+}
+
+a,
+button,
+[role="button"] {
+  cursor: none;
+}
+
+.font-display { font-family: var(--font-display); }
+.font-cinzel { font-family: var(--font-cinzel); }
+.font-body { font-family: var(--font-body); }
+
+.text-gold { color: var(--color-gold); }
+.text-gold-light { color: var(--color-gold-light); }
+.text-gold-dim { color: var(--color-gold-dim); }
+.bg-gold { background-color: var(--color-gold); }
+.bg-dark { background-color: var(--color-dark); }
+.bg-dark3 { background-color: var(--color-dark3); }
+
+.text-gold-heading {
+  background-image: linear-gradient(180deg, var(--color-cream) 0%, var(--color-gold-light) 100%);
+  -webkit-text-fill-color: transparent;
+  color: #0000;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Grain / film-noise overlay */
+.grain {
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  position: fixed;
+  inset: 0;
+}
+
+/* Custom cursor */
+.cursor-dot {
+  background: var(--color-gold-accent);
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+  border-radius: 999px;
+  width: 6px;
+  height: 6px;
+  transition: transform 0.1s, opacity 0.2s;
+  animation: cursorPulse 2.5s ease-in-out infinite;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.cursor-dot.hidden { opacity: 0; }
+.cursor-ring {
+  border: 1px solid var(--color-gold-border-md);
+  pointer-events: none;
+  z-index: 99998;
+  will-change: transform;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s, height 0.3s, border-color 0.3s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring.hovering {
+  border-color: var(--color-gold-glow-40);
+  width: 52px;
+  height: 52px;
+}
+
+@keyframes cursorPulse {
+  0%, 100% { opacity: 0.9; box-shadow: 0 0 0 0 var(--color-gold-glow-40); }
+  50% { opacity: 1; box-shadow: 0 0 0 6px transparent; }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { filter: drop-shadow(0 0 18px rgba(200, 164, 93, 0.7)); }
+  50% { filter: drop-shadow(0 0 28px rgba(255, 215, 80, 0.85)); }
+}
+
+.animate-glow { animation: glowPulse 4s ease-in-out infinite; }
+
+/* Subtle scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0e0408; }
+::-webkit-scrollbar-thumb { background: #e8b02033; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #e8b02055; }
+
+/* Hide cursor customisations on touch devices */
+@media (hover: none) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+.flower-shower {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2147483647;
+}
+
+.flower-petal {
+  position: absolute;
+  top: -30px;
+  display: block;
+
+  border-radius: 80% 20% 80% 20%;
+
+  opacity: 0;
+
+  animation-name: straightFlowerFall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+/* Random flower colors */
+.flower-petal:nth-child(4n) {
+  background: #f4b6c2;
+}
+
+.flower-petal:nth-child(4n + 1) {
+  background: #fff1b8;
+}
+
+.flower-petal:nth-child(4n + 2) {
+  background: #e99aaa;
+}
+
+.flower-petal:nth-child(4n + 3) {
+  background: #f8d8df;
+}
+
+@keyframes straightFlowerFall {
+  0% {
+    transform: translateY(-8vh) rotate(0deg);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(50vh) rotate(180deg);
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(115vh) rotate(360deg);
+    opacity: 0;
+  }
+}
