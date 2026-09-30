@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -104,24 +105,24 @@ const familyMembers = [
   {
     name: ["Deepak", "Jyoti"],
     relation: "Papa - Mummy",
-    image: "/images/family/Jyoti-Deepak.png",
+    image: "/images/family/Jyoti-Deepak-web.webp",
     aspect: "4 / 3",
   },
   {
     name: ["Payal"],
     relation: "Sister",
-    image: "/images/family/payal.jpeg",
+    image: "/images/family/payal-web.webp",
     aspect: "4 / 6.2",
   },
   {
     name: ["Cousins"],
     relation: "",
-    image: "/images/family/cousins.png",
+    image: "/images/family/cousins-web.webp",
     aspect: "16 / 9",
   },
 ];
 
-const friends = ["Raja Singh", "Pradeep Rajput", "Prakash Das", "Vikas Sharma"];
+const friends = ["Mohan & Prajakta", "Shubham & Aishwariya", "Kunal", "Vaibhav", "Ragini", "Sahil"];
 
 /* ------------------------------------------------------------------ */
 /* Hooks                                                              */
@@ -321,7 +322,7 @@ export function Hero() {
   return (
     <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-black">
       <video muted playsInline autoPlay preload="metadata" className="absolute inset-0 h-full w-full object-cover object-center" style={{ transform: "scale(1.06)" }}>
-        <source src="/video/wedding.mp4" type="video/mp4" />
+        <source src="/video/wedding-bg.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 z-10" style={{ background: "var(--color-black-42)" }} />
       <div className="relative z-20 flex w-full flex-col items-center px-6 text-center sm:px-10">
@@ -404,149 +405,481 @@ export function Mantra() {
 /* Scratch card                                                       */
 /* ------------------------------------------------------------------ */
 function FlowerShower({ active }: { active: boolean }) {
-  if (!active || typeof document === "undefined") return null;
+  const petals = useMemo(() => {
+    const count = 150;
 
-  const petals = Array.from({ length: 350 });
+    const petalImages = [
+      "/images/petals/petal-1.png",
+      "/images/petals/petal-2.png",
+      "/images/petals/petal-3.png",
+      "/images/petals/petal-4.png",
+    ];
+
+    return Array.from({ length: count }, (_, i) => {
+      const size = 18 + Math.random() * 28;
+
+      // Slower = smoother and more natural
+      const duration = 3 + Math.random() * 1.5;
+
+      // Spread starting times
+      const delay = Math.random() * 0.7;
+
+      // Starting position
+      const startX = Math.random() * 100;
+
+      // Gentle wind movement
+      const drift =
+        Math.random() > 0.5
+          ? 50 + Math.random() * 110
+          : -(50 + Math.random() * 110);
+
+      // Natural rotation
+      const rotation =
+        Math.random() > 0.5
+          ? 360 + Math.random() * 720
+          : -(360 + Math.random() * 720);
+
+      const opacity = 0.6 + Math.random() * 0.4;
+
+      const scale = 0.7 + Math.random() * 0.6;
+
+      const image =
+        petalImages[
+        Math.floor(Math.random() * petalImages.length)
+        ];
+
+      return {
+        id: i,
+        image,
+        size,
+        duration,
+        delay,
+        startX,
+        drift,
+        rotation,
+        opacity,
+        scale,
+      };
+    });
+  }, []);
+
+  if (!active || typeof document === "undefined") {
+    return null;
+  }
 
   return createPortal(
     <div
       className="flower-shower"
       aria-hidden="true"
     >
-      {petals.map((_, i) => {
-        const size = 7 + Math.random() * 14;
-        const duration = 1.8 + Math.random() * 1;
-        const delay = Math.random() * 0.5;
-        const startX = Math.random() * 100;
-        const rotation = Math.random() * 360;
+      {petals.map((petal) => (
+        <img
+          key={petal.id}
+          src={petal.image}
+          alt=""
+          draggable={false}
+          className="flower-petal"
+          style={
+            {
+              left: `${petal.startX}vw`,
+              width: `${petal.size}px`,
+              height: "auto",
+              opacity: petal.opacity,
 
-        return (
-          <span
-            key={i}
-            className="flower-petal"
-            style={{
-              left: `${startX}vw`,
-              width: `${size}px`,
-              height: `${size * 0.65}px`,
-              animationDuration: `${duration}s`,
-              animationDelay: `${delay}s`,
-              transform: `rotate(${rotation}deg)`,
-            }}
-          />
-        );
-      })}
+              "--petal-duration": `${petal.duration}s`,
+              "--petal-delay": `${petal.delay}s`,
+              "--petal-drift": `${petal.drift}px`,
+              "--petal-rotation": `${petal.rotation}deg`,
+              "--petal-scale": petal.scale,
+            } as React.CSSProperties
+          }
+        />
+      ))}
     </div>,
     document.body
   );
 }
 
+
 function ScratchCard() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const [revealed, setRevealed] = useState(false);
+
   const drawing = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+
+    const ctx = canvas.getContext("2d", {
+      willReadFrequently: true,
+    });
+
     if (!ctx) return;
 
     const draw = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const g = ctx.createLinearGradient(0, 0, rect.width, rect.height);
-      g.addColorStop(0, "#d3a92e");
-      g.addColorStop(0.45, "#f6d86a");
-      g.addColorStop(0.7, "#c79a20");
-      g.addColorStop(1, "#a87f16");
+      const dpr = Math.min(
+        window.devicePixelRatio || 1,
+        2
+      );
+
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+
+      ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
+
+      /*
+       * GOLD FOIL
+       */
+      const g = ctx.createLinearGradient(
+        0,
+        0,
+        rect.width,
+        rect.height
+      );
+
+      g.addColorStop(
+        0,
+        "#d3a92e"
+      );
+
+      g.addColorStop(
+        0.45,
+        "#f6d86a"
+      );
+
+      g.addColorStop(
+        0.7,
+        "#c79a20"
+      );
+
+      g.addColorStop(
+        1,
+        "#a87f16"
+      );
+
+      ctx.globalAlpha = 1;
+
       ctx.fillStyle = g;
-      ctx.fillRect(0, 0, rect.width, rect.height);
 
-      // subtle foil shimmer bands
+      ctx.fillRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+      );
+
+
+      /*
+       * SUBTLE FOIL SHIMMER
+       */
       ctx.globalAlpha = 0.18;
-      for (let i = 0; i < rect.width; i += 18) {
-        ctx.fillStyle = i % 36 === 0 ? "#fff4c2" : "#8a6a12";
-        ctx.fillRect(i, 0, 9, rect.height);
+
+      for (
+        let i = 0;
+        i < rect.width;
+        i += 18
+      ) {
+        ctx.fillStyle =
+          i % 36 === 0
+            ? "#fff4c2"
+            : "#8a6a12";
+
+        ctx.fillRect(
+          i,
+          0,
+          9,
+          rect.height
+        );
       }
+
       ctx.globalAlpha = 1;
     };
 
+
     draw();
-    const onResize = () => draw();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+
+    const onResize = () => {
+      draw();
+    };
+
+    window.addEventListener(
+      "resize",
+      onResize
+    );
+
+    return () => {
+      window.removeEventListener(
+        "resize",
+        onResize
+      );
+    };
   }, []);
 
-  const scratch = (clientX: number, clientY: number) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
 
-    ctx.globalCompositeOperation = "destination-out";
+  const scratch = (
+    clientX: number,
+    clientY: number
+  ) => {
+    const canvas = canvasRef.current;
+
+    const ctx =
+      canvas?.getContext("2d", {
+        willReadFrequently: true,
+      });
+
+    if (!canvas || !ctx) return;
+
+
+    const rect =
+      canvas.getBoundingClientRect();
+
+
+    const x =
+      clientX - rect.left;
+
+    const y =
+      clientY - rect.top;
+
+
+    /*
+     * REMOVE GOLD
+     */
+    ctx.globalCompositeOperation =
+      "destination-out";
+
+
     ctx.beginPath();
-    ctx.arc(x, y, 30, 0, Math.PI * 2);
+
+    ctx.arc(
+      x,
+      y,
+      30,
+      0,
+      Math.PI * 2
+    );
+
     ctx.fill();
 
-    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+    /*
+     * CHECK SCRATCH %
+     */
+    const data =
+      ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      ).data;
+
+
     let clear = 0;
-    for (let i = 3; i < data.length; i += 4) {
-      if (data[i] < 40) clear++;
+
+
+    for (
+      let i = 3;
+      i < data.length;
+      i += 4
+    ) {
+      if (data[i] < 40) {
+        clear++;
+      }
     }
-    const pct = clear / (data.length / 4);
-    if (pct > 0.45) setRevealed(true);
+
+
+    const pct =
+      clear /
+      (data.length / 4);
+
+
+    /*
+     * FLOWER SHOWER STARTS
+     * AFTER 45% SCRATCHED
+     */
+    if (
+      pct > 0.45 &&
+      !revealed
+    ) {
+      setRevealed(true);
+    }
   };
 
-  const onPointerDown = (e: ReactPointerEvent<HTMLCanvasElement>) => {
+
+  const onPointerDown = (
+    e: ReactPointerEvent<HTMLCanvasElement>
+  ) => {
     drawing.current = true;
-    e.currentTarget.setPointerCapture(e.pointerId);
-    scratch(e.clientX, e.clientY);
+
+    e.currentTarget.setPointerCapture(
+      e.pointerId
+    );
+
+    scratch(
+      e.clientX,
+      e.clientY
+    );
   };
-  const onPointerMove = (e: ReactPointerEvent<HTMLCanvasElement>) => {
-    if (drawing.current) scratch(e.clientX, e.clientY);
+
+
+  const onPointerMove = (
+    e: ReactPointerEvent<HTMLCanvasElement>
+  ) => {
+    if (!drawing.current) return;
+
+    scratch(
+      e.clientX,
+      e.clientY
+    );
   };
+
+
   const onPointerUp = () => {
     drawing.current = false;
   };
 
+
   return (
     <>
-      <FlowerShower active={revealed} />
+      {/* FLOWER SHOWER */}
+      <FlowerShower
+        active={revealed}
+      />
 
+
+      {/* SCRATCH CARD */}
       <div
-        className="relative w-full select-none overflow-hidden"
-        style={{ border: "1px solid rgba(200,164,93,0.25)", aspectRatio: "16/7", background: "rgba(18,11,8,0.75)", backdropFilter: "blur(8px)" }}
+        className="
+          relative
+          w-full
+          select-none
+          overflow-hidden
+        "
+        style={{
+          border:
+            "1px solid rgba(200,164,93,0.25)",
+
+          aspectRatio: "16/7",
+
+          background:
+            "rgba(18,11,8,0.75)",
+
+          backdropFilter:
+            "blur(8px)",
+        }}
       >
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 px-4 text-center">
-          <p className="font-display italic text-gold-light" style={{ fontSize: "clamp(1rem, 3vw, 1.6rem)" }}>
+
+        {/* MESSAGE UNDER FOIL */}
+        <div
+          className="
+            absolute
+            inset-0
+            flex
+            flex-col
+            items-center
+            justify-center
+            gap-1.5
+            px-4
+            text-center
+          "
+        >
+
+          <p
+            className="
+              font-display
+              italic
+              text-gold-light
+            "
+            style={{
+              fontSize:
+                "clamp(1rem, 3vw, 1.6rem)",
+            }}
+          >
             शुभ विवाह ✦ मंगलम्
           </p>
-          <p className="font-cinzel uppercase tracking-[0.3em] text-gold" style={{ fontSize: "clamp(0.5rem, 1.8vw, 0.7rem)", opacity: 0.85 }}>
+          <h3 className="font-serif italic text-gold-heading font-bold leading-none mb-1" style={{ fontSize: "clamp(1.6rem, 7vw, 2.75rem)" }}>
+            05 December 2026
+          </h3>
+
+          <p
+            className="
+              font-cinzel
+              uppercase
+              tracking-[0.3em]
+              text-gold
+            "
+            style={{
+              fontSize:
+                "clamp(0.5rem, 1.8vw, 0.7rem)",
+
+              opacity: 0.85,
+            }}
+          >
             With love, Rishabh & Diksha
           </p>
+
         </div>
+
+
+        {/* GOLD SCRATCH LAYER */}
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 h-full w-full touch-none"
-          style={{ cursor: "crosshair", opacity: revealed ? 0 : 1, transition: "opacity 0.6s ease" }}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
+          className="
+            absolute
+            inset-0
+            h-full
+            w-full
+            touch-none
+          "
+          style={{
+            cursor: "crosshair",
+
+            opacity:
+              revealed ? 0 : 1,
+
+            transition:
+              "opacity 0.6s ease",
+          }}
+
+          onPointerDown={
+            onPointerDown
+          }
+
+          onPointerMove={
+            onPointerMove
+          }
+
+          onPointerUp={
+            onPointerUp
+          }
+
+          onPointerLeave={
+            onPointerUp
+          }
+
           role="img"
-          aria-label="Scratch the golden foil to reveal a message"
+
+          aria-label="
+            Scratch the golden foil
+            to reveal a message
+          "
         />
+
       </div>
     </>
   );
 }
-
 /* ------------------------------------------------------------------ */
 /* Countdown + scratch + calendar                                     */
 /* ------------------------------------------------------------------ */
@@ -616,7 +949,7 @@ export function CountdownSection() {
         <Reveal y={32} delay={500}>
           <div className="mt-8">
             <a
-              href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rishabh+%26+Diksha+Wedding&details=You+are+cordially+invited+to+celebrate+the+wedding+of+Rishabh+%26+Diksha.&location=Hotel+Regal+%26+Resort%2C+Faizabad+Road%2C+Inside+Shalimar+Paradise+Township%2C+Lucknow&dates=20261125T133000Z%2F20261125T183000Z&ctz=Asia%2FKolkata"
+              href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rishabh%20%26%20Diksha%20Wedding&details=You%20are%20cordially%20invited%20to%20celebrate%20the%20wedding%20of%20Rishabh%20%26%20Diksha.&location=Karwaan%20Celebrations%2C%20Plot%20no%2064%2C%20Bhagyashree%20Nagar%2C%20Kharbi%20Road%2C%20Nagpur%20-%20440024&dates=20261205T190000%2F20261205T235900&ctz=Asia%2FKolkata"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative inline-flex items-center gap-3 overflow-hidden px-8 py-3.5"
@@ -741,16 +1074,16 @@ export function BrideGroom() {
           The Groom
         </p>
         <p className="font-body leading-relaxed" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
-          S/o. Smt. [Mata ji ka naam]
+          S/o. Smt. Jyoti Sonpure
         </p>
         <p className="font-body my-1" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-gold)" }}>
           &
         </p>
         <p className="font-body leading-relaxed mb-2" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
-          Sh. [Pita ji ka naam]
+          Sh. Deepak Sonpure
         </p>
         <p className="font-cinzel uppercase mt-2" style={{ fontSize: "clamp(0.62rem, 1.6vw, 0.72rem)", letterSpacing: "0.25em", color: "var(--color-gold-accent)", opacity: 0.8 }}>
-          [City, State]
+          [Itarsi, M.P.]
         </p>
 
 
@@ -772,16 +1105,16 @@ export function BrideGroom() {
           The Bride
         </p>
         <p className="font-body leading-relaxed" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
-          D/o. Smt. [Mata ji ka naam]
+          D/o. Smt. Seema Binjwe
         </p>
         <p className="font-body my-1" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-gold)" }}>
           &
         </p>
         <p className="font-body leading-relaxed mb-2" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
-          Sh. [Pita ji ka naam]
+          Sh. Jagdish Binjwe
         </p>
         <p className="font-cinzel uppercase mt-2" style={{ fontSize: "clamp(0.62rem, 1.6vw, 0.72rem)", letterSpacing: "0.25em", color: "var(--color-gold-accent)", opacity: 0.8 }}>
-          [City, State]
+          [Andhariya,Amla, M.P.]
         </p>
 
         <Reveal y={16} delay={500}>
@@ -822,12 +1155,13 @@ export function Events() {
               return (
                 <Reveal y={40} key={ev.title}>
                   <div className="relative flex flex-col overflow-hidden lg:flex-row" style={{ border: "1px solid var(--color-gold-border-sm)" }}>
-                    <div className="relative h-56 w-full overflow-hidden lg:h-auto lg:w-[42%]" style={{ order: ev.reverse ? 2 : 0 }}>
+                    <div
+                      className={`relative order-1 h-56 w-full overflow-hidden lg:h-auto lg:w-[42%] ${ev.reverse ? "lg:order-2" : "lg:order-1"}`}>
                       <img alt={ev.title} src={ev.image} loading="lazy" className="object-cover object-center" style={{ position: "absolute", height: "100%", width: "100%", left: 0, top: 0 }} />
                       <div className="absolute inset-0" style={{ background: ev.reverse ? "linear-gradient(to left, var(--color-surface-2xs) 50%, var(--color-surface-lg) 100%)" : "linear-gradient(to right, var(--color-surface-2xs) 50%, var(--color-surface-lg) 100%)" }} />
-                      <div className="absolute inset-0 lg:hidden" style={{ background: "var(--color-surface-md)" }} />
+                      <div className="absolute inset-0 lg:hidden" style={{ background: "transparent" }} />
                     </div>
-                    <div className="relative flex flex-1 flex-col justify-center px-8 py-9 sm:px-10 lg:py-10" style={{ background: "var(--color-surface-content)", backdropFilter: "blur(8px)" }}>
+                    <div className={`relative order-2 flex flex-1 flex-col justify-center px-8 py-9 sm:px-10 lg:py-10 ${ev.reverse ? "lg:order-1" : "lg:order-2"}`} style={{background: "var(--color-surface-content)",backdropFilter: "blur(8px)",}}>
                       <div className="mb-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <span className="inline-block" style={{ width: 18, height: 2, background: "var(--color-gold-line)" }} />
@@ -1086,7 +1420,7 @@ export function Family() {
         <div className="mb-12">
           <Reveal y={22}>
             <div className="flex flex-col items-center text-center mb-7">
-              <p className="mb-4 font-cinzel uppercase tracking-[0.6em] text-gold" style={{ fontSize: "clamp(0.85rem, 1.5vw, 0.65rem)", opacity: 0.8 }}>
+              <p className="mb-4 font-cinzel uppercase tracking-[0.3em] text-gold" style={{ fontSize: "clamp(1.5rem, 2vw, 1.3rem)", opacity: 1.2 }}>
                 ✦ परिवार ✦
               </p>
               <h2 className="font-display text-gold-heading" style={{ fontSize: "clamp(3.5rem, 8vw, 5.5rem)", lineHeight: 1.1, letterSpacing: "-0.03em", fontWeight: 300 }}>
@@ -1216,7 +1550,7 @@ export function Family() {
         <div>
           <Reveal y={22}>
             <div className="flex flex-col items-center text-center mb-7">
-              <p className="mb-4 font-cinzel uppercase tracking-[0.6em] text-gold" style={{ fontSize: "clamp(0.85rem, 1.5vw, 0.65rem)", opacity: 0.8 }}>
+              <p className="mb-4 font-cinzel uppercase tracking-[0.3em] text-gold" style={{ fontSize: "clamp(1.5rem, 2vw, 1.3rem)", opacity: 1.2 }}>
                 ✦ मित्र ✦
               </p>
               <h2 className="font-display text-gold-heading" style={{ fontSize: "clamp(3.5rem, 8vw, 5.5rem)", lineHeight: 1.1, letterSpacing: "-0.03em", fontWeight: 300 }}>
@@ -1244,7 +1578,7 @@ export function Family() {
             ))}
           </div>
           <Reveal y={22} delay={300}>
-            <p className="font-cinzel uppercase text-center mt-6" style={{ fontSize: "0.45rem", letterSpacing: "0.55em", color: "rgba(200,164,93,0.28)" }}>
+            <p className="font-cinzel uppercase text-center mt-6" style={{ fontSize: "0.65rem", letterSpacing: "0.55em", color: "rgba(200, 164, 93, 0.85)" }}>
               With love & blessings
             </p>
           </Reveal>
@@ -1264,7 +1598,9 @@ export function Venue() {
       <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 40% at 50% 80%, var(--color-gold-glow-04) 0%, transparent 70%)" }} />
       <div className="relative z-10 mx-auto max-w-5xl">
         <SectionHeading eyebrow="Find Your Way To Us" title="The Venue" />
-
+        <p className="font-cinzel uppercase text-center mt-6" style={{ fontSize: "0.55rem", letterSpacing: "0.55em", color: "rgba(225, 183, 100, 0.76)" }}>
+          Click on Map for Directions
+        </p>
         <Reveal y={24}>
           <div className="group relative overflow-hidden" style={{ border: "1px solid var(--color-gold-border-sm)" }}>
             <span className="absolute top-3 left-3 z-10 h-4 w-4 border-t border-l" style={{ borderColor: "var(--color-gold-bracket)" }} />
@@ -1369,16 +1705,16 @@ export function Footer() {
         </Reveal>
         <Reveal y={20} delay={300}>
           <div className="mt-6 flex items-center gap-6">
-            <a target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2" href="https://instagram.com/jayvardhan.singh">
+            <a target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2" href="https://instagram.com/rishabh_3030">
               <InstagramIcon size={15} className="transition-all duration-300 group-hover:text-gold-light" style={{ color: "var(--color-gold-glow-65)" }} />
               <span className="font-cinzel uppercase tracking-[0.38em] transition-opacity duration-300 group-hover:opacity-100" style={{ color: "var(--color-gold)", fontSize: "0.54rem", opacity: 0.65 }}>
-                @jayvardhan.singh
+                @Rishabh.sonpure
               </span>
             </a>
-            <a target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2" href="https://instagram.com/anushka.royal">
+            <a target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2" href="https://instagram.com/dbinjwe">
               <InstagramIcon size={15} className="transition-all duration-300 group-hover:text-gold-light" style={{ color: "var(--color-gold-glow-65)" }} />
               <span className="font-cinzel uppercase tracking-[0.38em] transition-opacity duration-300 group-hover:opacity-100" style={{ color: "var(--color-gold)", fontSize: "0.54rem", opacity: 0.65 }}>
-                @anushka.royal
+                @Diksha.binjwe
               </span>
             </a>
           </div>
