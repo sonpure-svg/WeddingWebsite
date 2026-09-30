@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  Blessings,
+  // Blessings,
   BrideGroom,
   Closing,
   CountdownSection,
@@ -16,12 +16,58 @@ import {
 } from "./sections";
 import { OrnamentDivider } from "./ui";
 
+const weddingImages = [
+  // couple
+  "/images/couple/couple.jpg",
+  "/images/couple/fort-view.jpg",
+  "/images/couple/hero-portrait.jpg",
+  "/images/couple/invite-cover.jpg",
+
+
+  // family
+  "/images/family/cousins-web.webp",
+  "/images/family/Jyoti-Deepak-web.webp",
+  "/images/family/payal-web.webp",
+
+
+  // venues
+  "/images/venues/haldi.png",
+  "/images/venues/mehndi.png",
+  "/images/venues/sangeet.png",
+  "/images/venues/tilak.png",
+  "/images/venues/wedding.png",
+];
+
+function preloadImages(images: string[]) {
+  images.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+  });
+}
+
+function preloadVideo(src: string) {
+  const video = document.createElement("video");
+
+  video.preload = "metadata";
+  video.src = src;
+  video.load();
+}
 export default function App() {
   const [opened, setOpened] = useState(false);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!opened) {
+      // Preload important images
+      preloadImages(weddingImages);
+
+      // Start preparing the background video
+      preloadVideo("/videos/wedding-bg.mp4");
+    }
+  }, [opened]);
 
   /* Lock scroll while the cover is shown */
   useEffect(() => {

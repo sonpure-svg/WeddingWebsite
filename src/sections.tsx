@@ -321,7 +321,7 @@ export function Cover({ opened, onOpen }: { opened: boolean; onOpen: () => void 
 export function Hero() {
   return (
     <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-black">
-      <video muted playsInline autoPlay preload="metadata" className="absolute inset-0 h-full w-full object-cover object-center" style={{ transform: "scale(1.06)" }}>
+      <video muted playsInline autoPlay preload="auto" className="absolute inset-0 h-full w-full object-cover object-center" style={{ transform: "scale(1.06)" }}>
         <source src="/video/wedding-bg.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 z-10" style={{ background: "var(--color-black-42)" }} />
