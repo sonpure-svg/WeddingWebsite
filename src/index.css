@@ -202,7 +202,7 @@ button,
 }
 
 /* Random flower colors */
-.flower-petal:nth-child(4n) {
+/* .flower-petal:nth-child(4n) {
   background: #f4b6c2;
 }
 
@@ -216,7 +216,7 @@ button,
 
 .flower-petal:nth-child(4n + 3) {
   background: #f8d8df;
-}
+} */
 
 @keyframes straightFlowerFall {
   0% {
@@ -241,4 +241,184 @@ button,
     transform: translateY(115vh) rotate(360deg);
     opacity: 0;
   }
+}
+
+/* =========================================
+   REALISTIC WEDDING FLOWER SHOWER
+   ========================================= */
+
+.flower-shower {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  /*
+   * Above the entire website
+   * but below browser UI.
+   */
+  z-index: 999999;
+}
+
+
+.flower-petal {
+  position: absolute;
+  top: -100px;
+
+  width: auto;
+  height: auto;
+
+  aspect-ratio: auto;
+
+  background: transparent !important;
+
+  border-radius: 0 !important;
+  clip-path: none !important;
+
+  display: block;
+
+  max-width: none !important;
+  max-height: none !important;
+
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+
+  /* Important for smooth rotation */
+  transform-origin: center center;
+
+  /* Helps prevent blurry edges during rotation */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  animation-name: realistic-petal-fall;
+  animation-duration: var(--petal-duration);
+  animation-delay: var(--petal-delay);
+
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+
+/* =========================================
+   NATURAL PETAL MOVEMENT
+   ========================================= */
+
+@keyframes realistic-petal-fall {
+  0% {
+    transform:
+      translate3d(0, -10vh, 0)
+      rotate(0deg)
+      scale(var(--petal-scale));
+  }
+
+  15% {
+    transform:
+      translate3d(
+        calc(var(--petal-drift) * 0.15),
+        15vh,
+        0
+      )
+      rotate(
+        calc(var(--petal-rotation) * 0.12)
+      )
+      scale(var(--petal-scale));
+  }
+
+  30% {
+    transform:
+      translate3d(
+        calc(var(--petal-drift) * 0.38),
+        30vh,
+        0
+      )
+      rotate(
+        calc(var(--petal-rotation) * 0.28)
+      )
+      scale(var(--petal-scale));
+  }
+
+  45% {
+    transform:
+      translate3d(
+        calc(var(--petal-drift) * 0.22),
+        45vh,
+        0
+      )
+      rotate(
+        calc(var(--petal-rotation) * 0.43)
+      )
+      scale(var(--petal-scale));
+  }
+
+  60% {
+    transform:
+      translate3d(
+        calc(var(--petal-drift) * 0.55),
+        60vh,
+        0
+      )
+      rotate(
+        calc(var(--petal-rotation) * 0.60)
+      )
+      scale(var(--petal-scale));
+  }
+
+  75% {
+    transform:
+      translate3d(
+        calc(var(--petal-drift) * 0.72),
+        75vh,
+        0
+      )
+      rotate(
+        calc(var(--petal-rotation) * 0.75)
+      )
+      scale(var(--petal-scale));
+  }
+
+  90% {
+    transform:
+      translate3d(
+        calc(var(--petal-drift) * 0.90),
+        98vh,
+        0
+      )
+      rotate(
+        calc(var(--petal-rotation) * 0.90)
+      )
+      scale(var(--petal-scale));
+  }
+
+  100% {
+    transform:
+      translate3d(
+        var(--petal-drift),
+        115vh,
+        0
+      )
+      rotate(var(--petal-rotation))
+      scale(var(--petal-scale));
+  }
+}
+
+
+/* =========================================
+   MOBILE PERFORMANCE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+  .flower-petal {
+    /*
+     * Slightly smaller petals on phones
+     */
+    transform-origin: center center;
+  }
+
 }
