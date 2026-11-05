@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import LampAnimation from "./LampAnimation";
 import {
   // Blessings,
   BrideGroom,
@@ -23,6 +24,12 @@ const weddingImages = [
   "/images/couple/hero-portrait.jpg",
   "/images/couple/invite-cover.jpg",
 
+  // petals
+  "/images/petals/petal-1.png",
+  "/images/petals/petal-2.png",
+  "/images/petals/petal-3.png",
+  "/images/petals/petal-4.png",
+
 
   // family
   "/images/family/cousins-web.webp",
@@ -36,6 +43,21 @@ const weddingImages = [
   "/images/venues/sangeet.png",
   "/images/venues/tilak.png",
   "/images/venues/wedding.png",
+
+  //Logo
+  "/images/RDLogo.png",
+
+  //gallery
+  "/images/gallery/DSC07325.jpg",
+  "/images/gallery/DSC07345.jpg",
+  "/images/gallery/DSC07375.jpg",
+  "/images/gallery/DSC07414.jpg",
+  "/images/gallery/DSC07486.jpg",
+  "/images/gallery/DSC07503.jpg",
+  "/images/gallery/DSC07542.jpg",
+  "/images/gallery/DSC07620.jpg",
+  "/images/gallery/DSC07632.jpg",
+  "/images/gallery/DSC07633.jpg",
 ];
 
 function preloadImages(images: string[]) {
@@ -56,8 +78,10 @@ export default function App() {
   const [opened, setOpened] = useState(false);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  
 
   useEffect(() => {
     if (!opened) {
@@ -139,13 +163,26 @@ export default function App() {
   }, []);
 
   const open = useCallback(() => {
-    setOpened(true);
-    window.scrollTo({ top: 0 });
-    toggleMusic();
-  }, [toggleMusic]);
+
+  setOpened(true);
+
+  window.scrollTo({ top: 0 });
+
+  // Start background video
+  if (videoRef.current) {
+    videoRef.current.play().catch(() => {});
+  }
+
+  // Start music
+  toggleMusic();
+
+}, [toggleMusic]);
+
+
 
   return (
     <>
+     <LampAnimation active={opened} />
       <div className="cursor-dot hidden" ref={dotRef} aria-hidden="true" />
       <div className="cursor-ring hidden" ref={ringRef} aria-hidden="true" />
 
@@ -187,7 +224,7 @@ export default function App() {
       <Cover opened={opened} onOpen={open} />
 
       <main className="bg-dark min-h-screen" style={{ visibility: opened ? "visible" : "hidden" }}>
-        <Hero />
+        <Hero videoRef={videoRef} opened={opened} />
         <Mantra />
         <CountdownSection />
         <OrnamentDivider />
