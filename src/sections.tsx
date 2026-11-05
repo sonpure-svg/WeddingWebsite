@@ -576,8 +576,22 @@ export function Hero({
   }, [opened]);
   return (
     <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-black">
-      <video ref={videoRef} muted playsInline preload="auto" className="absolute inset-0 h-full w-full object-cover object-center" style={{ transform: "scale(1.06)" }}>
-        <source src="/video/wedding-bg.mp4" type="video/mp4" />
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        preload="auto"
+        poster="/images/couple/hero-portrait.webp"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+        style={{
+          transform: "scale(1.06)",
+          backgroundColor: "#080504",
+        }}
+      >
+        <source
+          src="/video/wedding-bg.mp4"
+          type="video/mp4"
+        />
       </video>
       <div className="absolute inset-0 z-10" style={{ background: "var(--color-black-42)" }} />
       <div className="relative z-20 flex w-full flex-col items-center px-6 text-center sm:px-10">

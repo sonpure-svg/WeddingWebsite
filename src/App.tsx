@@ -188,9 +188,12 @@ export default function App() {
 
   return (
     <>
-    {!loaderReady && (
-      <Preloader onComplete={handleLoaderComplete} />
-    )}
+      {!loaderReady && (
+        <Preloader
+          onComplete={handleLoaderComplete}
+          videoRef={videoRef}
+        />
+      )}
       <LampAnimation active={opened} />
 
       <div className="cursor-dot hidden" ref={dotRef} aria-hidden="true" />
