@@ -1,3 +1,4 @@
+import Preloader from "./Preloader";
 import { useCallback, useEffect, useRef, useState } from "react";
 import LampAnimation from "./LampAnimation";
 import {
@@ -17,48 +18,48 @@ import {
 } from "./sections";
 import { OrnamentDivider } from "./ui";
 
-const weddingImages = [
-  // couple
-  "/images/couple/couple.jpg",
-  "/images/couple/fort-view.jpg",
-  "/images/couple/hero-portrait.webp",
-  "/images/couple/invite-cover.webp",
+// const weddingImages = [
+//   // couple
+//   "/images/couple/couple.jpg",
+//   "/images/couple/fort-view.jpg",
+//   "/images/couple/hero-portrait.webp",
+//   "/images/couple/invite-cover.webp",
 
-  // petals
-  "/images/petals/petal-1.png",
-  "/images/petals/petal-2.png",
-  "/images/petals/petal-3.png",
-  "/images/petals/petal-4.png",
-
-
-  // family
-  "/images/family/cousins-web.webp",
-  "/images/family/Jyoti-Deepak-web.webp",
-  "/images/family/payal-web.webp",
+//   // petals
+//   "/images/petals/petal-1.png",
+//   "/images/petals/petal-2.png",
+//   "/images/petals/petal-3.png",
+//   "/images/petals/petal-4.png",
 
 
-  // venues
-  "/images/venues/haldi.png",
-  "/images/venues/mehndi.png",
-  "/images/venues/sangeet.png",
-  "/images/venues/tilak.png",
-  "/images/venues/wedding.png",
+//   // family
+//   "/images/family/cousins-web.webp",
+//   "/images/family/Jyoti-Deepak-web.webp",
+//   "/images/family/payal-web.webp",
 
-  //Logo
-  "/images/RDLogo.png",
 
-  //gallery
-  "/images/gallery/DSC07325.webp",
-  "/images/gallery/DSC07345.webp",
-  "/images/gallery/DSC07375.webp",
-  "/images/gallery/DSC07414.webp",
-  "/images/gallery/DSC07486.webp",
-  "/images/gallery/DSC07503.webp",
-  "/images/gallery/DSC07542.webp",
-  "/images/gallery/DSC07620.webp",
-  "/images/gallery/DSC07632.webp",
-  "/images/gallery/DSC07633.webp",
-];
+//   // venues
+//   "/images/venues/haldi.png",
+//   "/images/venues/mehndi.png",
+//   "/images/venues/sangeet.png",
+//   "/images/venues/tilak.png",
+//   "/images/venues/wedding.png",
+
+//   //Logo
+//   "/images/RDLogo.png",
+
+//   //gallery
+//   "/images/gallery/DSC07325.webp",
+//   "/images/gallery/DSC07345.webp",
+//   "/images/gallery/DSC07375.webp",
+//   "/images/gallery/DSC07414.webp",
+//   "/images/gallery/DSC07486.webp",
+//   "/images/gallery/DSC07503.webp",
+//   "/images/gallery/DSC07542.webp",
+//   "/images/gallery/DSC07620.webp",
+//   "/images/gallery/DSC07632.webp",
+//   "/images/gallery/DSC07633.webp",
+// ];
 
 function preloadImages(images: string[]) {
   images.forEach((src) => {
@@ -77,21 +78,26 @@ function preloadVideo(src: string) {
 export default function App() {
   const [opened, setOpened] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [loaderReady, setLoaderReady] = useState(false);
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  
 
-  useEffect(() => {
-    if (!opened) {
-      // Preload important images
-      preloadImages(weddingImages);
+  const handleLoaderComplete = useCallback(() => {
+    setLoaderReady(true);
+  }, []);
 
-      // Start preparing the background video
-      preloadVideo("/videos/wedding-bg.mp4");
-    }
-  }, [opened]);
+  // useEffect(() => {
+  //   if (!opened) {
+  //     // Preload important images
+  //     preloadImages(weddingImages);
+
+  //     // Start preparing the background video
+  //     preloadVideo("/videos/wedding-bg.mp4");
+  //   }
+  // }, [opened]);
 
   /* Lock scroll while the cover is shown */
   useEffect(() => {
@@ -164,25 +170,29 @@ export default function App() {
 
   const open = useCallback(() => {
 
-  setOpened(true);
+    setOpened(true);
 
-  window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0 });
 
-  // Start background video
-  if (videoRef.current) {
-    videoRef.current.play().catch(() => {});
-  }
+    // Start background video
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => { });
+    }
 
-  // Start music
-  toggleMusic();
+    // Start music
+    toggleMusic();
 
-}, [toggleMusic]);
+  }, [toggleMusic]);
 
 
 
   return (
     <>
-     <LampAnimation active={opened} />
+    {!loaderReady && (
+      <Preloader onComplete={handleLoaderComplete} />
+    )}
+      <LampAnimation active={opened} />
+
       <div className="cursor-dot hidden" ref={dotRef} aria-hidden="true" />
       <div className="cursor-ring hidden" ref={ringRef} aria-hidden="true" />
 
