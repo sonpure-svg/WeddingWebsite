@@ -21,8 +21,8 @@ const weddingImages = [
   // couple
   "/images/couple/couple.jpg",
   "/images/couple/fort-view.jpg",
-  "/images/couple/hero-portrait.jpg",
-  "/images/couple/invite-cover.jpg",
+  "/images/couple/hero-portrait.webp",
+  "/images/couple/invite-cover.webp",
 
   // petals
   "/images/petals/petal-1.png",
@@ -48,16 +48,16 @@ const weddingImages = [
   "/images/RDLogo.png",
 
   //gallery
-  "/images/gallery/DSC07325.jpg",
-  "/images/gallery/DSC07345.jpg",
-  "/images/gallery/DSC07375.jpg",
-  "/images/gallery/DSC07414.jpg",
-  "/images/gallery/DSC07486.jpg",
-  "/images/gallery/DSC07503.jpg",
-  "/images/gallery/DSC07542.jpg",
-  "/images/gallery/DSC07620.jpg",
-  "/images/gallery/DSC07632.jpg",
-  "/images/gallery/DSC07633.jpg",
+  "/images/gallery/DSC07325.webp",
+  "/images/gallery/DSC07345.webp",
+  "/images/gallery/DSC07375.webp",
+  "/images/gallery/DSC07414.webp",
+  "/images/gallery/DSC07486.webp",
+  "/images/gallery/DSC07503.webp",
+  "/images/gallery/DSC07542.webp",
+  "/images/gallery/DSC07620.webp",
+  "/images/gallery/DSC07632.webp",
+  "/images/gallery/DSC07633.webp",
 ];
 
 function preloadImages(images: string[]) {

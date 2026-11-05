@@ -238,7 +238,7 @@ export function Cover({
       <div className="absolute inset-0">
         <img
           alt="Couple"
-          src="/images/couple/invite-cover.jpg"
+          src="/images/couple/invite-cover.webp"
           className="object-cover"
           style={{
             position: "absolute",
@@ -1358,7 +1358,7 @@ export function Story() {
             <span className="absolute -bottom-3 -left-3 h-5 w-5 border-b border-l" style={{ borderColor: "var(--color-gold-line)" }} />
             <span className="absolute -bottom-3 -right-3 h-5 w-5 border-b border-r" style={{ borderColor: "var(--color-gold-line)" }} />
             <div className="relative overflow-hidden rounded-sm" style={{ aspectRatio: "3/4" }}>
-              <img alt="Rishabh & Diksha" src="/images/couple/hero-portrait.jpg" className="object-cover object-center" style={{ position: "absolute", height: "100%", width: "100%", left: 0, top: 0 }} />
+              <img alt="Rishabh & Diksha" src="/images/couple/hero-portrait.webp" className="object-cover object-center" style={{ position: "absolute", height: "100%", width: "100%", left: 0, top: 0 }} />
               <div className="absolute inset-0" style={{ background: "linear-gradient(to top, var(--color-surface) 0%, var(--color-surface-xs) 50%, var(--color-surface-sm) 100%)" }} />
             </div>
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap px-5 py-2" style={{ background: "var(--color-surface-dark)", border: "1px solid var(--color-gold-glow-25)", backdropFilter: "blur(8px)" }}>
@@ -1595,16 +1595,16 @@ export function Events() {
 /* ------------------------------------------------------------------ */
 
 const gallery = [
-  { src: "/images/gallery/DSC07345.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07620.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07325.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07375.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07414.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07486.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07503.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07542.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07632.jpg", alt: "Bride and groom" },
-  { src: "/images/gallery/DSC07633.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07345.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07620.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07325.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07375.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07414.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07486.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07503.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07542.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07632.webp", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07633.webp", alt: "Bride and groom" },
 ];
 
 export function Gallery() {
