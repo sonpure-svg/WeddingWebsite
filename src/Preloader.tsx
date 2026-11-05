@@ -1,0 +1,383 @@
+
+import { useEffect, useState } from "react";
+
+interface PreloaderProps {
+  onComplete: () => void;
+}
+
+const criticalImages = [
+  "/images/couple/invite-cover.jpg",
+  "/images/couple/hero-portrait.webp",
+  "/images/couple/couple.jpg",
+  "/images/RDLogo.png",
+  "/images/ganesha.png",
+];
+
+const HERO_VIDEO = "/video/wedding-bg.mp4";
+
+function loadImage(src: string): Promise<void> {
+  return new Promise((resolve) => {
+    const img = new Image();
+
+    const finish = () => resolve();
+
+    img.onload = finish;
+    img.onerror = finish;
+    img.src = src;
+
+    if (img.complete) finish();
+  });
+}
+
+function loadVideoMetadata(src: string): Promise<void> {
+  return new Promise((resolve) => {
+    const video = document.createElement("video");
+    let finished = false;
+
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      video.removeAttribute("src");
+      video.load();
+      resolve();
+    };
+
+    video.preload = "metadata";
+    video.onloadedmetadata = finish;
+    video.onerror = finish;
+
+    // Never let a slow video block the invitation.
+    const timeout = window.setTimeout(finish, 4000);
+
+    const originalFinish = finish;
+
+    video.onloadedmetadata = () => {
+      window.clearTimeout(timeout);
+      originalFinish();
+    };
+
+    video.onerror = () => {
+      window.clearTimeout(timeout);
+      originalFinish();
+    };
+
+    video.src = src;
+    video.load();
+  });
+}
+
+export default function Preloader({ onComplete }: PreloaderProps) {
+  const [progress, setProgress] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    let completed = false;
+
+    const startedAt = Date.now();
+
+    const resources = [
+      ...criticalImages.map((src) => loadImage(src)),
+      loadVideoMetadata(HERO_VIDEO),
+      document.fonts?.ready
+        ? document.fonts.ready.then(() => undefined).catch(() => undefined)
+        : Promise.resolve(),
+    ];
+
+    const total = resources.length;
+    let loaded = 0;
+
+    const updateProgress = () => {
+      loaded += 1;
+
+      if (!cancelled) {
+        setProgress(Math.round((loaded / total) * 100));
+      }
+    };
+
+    const trackedResources = resources.map((resource) =>
+      resource.then(updateProgress).catch(updateProgress)
+    );
+
+    const finishLoading = async () => {
+      // Maximum waiting time, even if a resource is extremely slow.
+      await Promise.race([
+        Promise.all(trackedResources),
+        new Promise<void>((resolve) => window.setTimeout(resolve, 9000)),
+      ]);
+
+      if (cancelled || completed) return;
+
+      completed = true;
+
+      // Keep the loader visible briefly for a polished entrance.
+      const elapsed = Date.now() - startedAt;
+      const remaining = Math.max(0, 1100 - elapsed);
+
+      await new Promise((resolve) => window.setTimeout(resolve, remaining));
+
+      if (cancelled) return;
+
+      setProgress(100);
+
+      window.setTimeout(() => {
+        if (cancelled) return;
+
+        setVisible(false);
+
+        window.setTimeout(() => {
+          if (!cancelled) onComplete();
+        }, 750);
+      }, 350);
+    };
+
+    finishLoading();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [onComplete]);
+
+  if (!visible) return null;
+
+  return (
+    <>
+      <style>{`
+        @keyframes loaderGlow {
+          0%, 100% { opacity: .45; }
+          50% { opacity: 1; }
+        }
+
+        @keyframes loaderShine {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(250%); }
+        }
+
+        @keyframes loaderRotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        @keyframes loaderAppear {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .wedding-loader-content {
+          animation: loaderAppear 1s ease forwards;
+        }
+
+        .wedding-loader-ornament {
+          animation: loaderRotate 35s linear infinite;
+        }
+
+        .wedding-loader-dot {
+          animation: loaderGlow 2s ease-in-out infinite;
+        }
+      `}</style>
+
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 100000,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background:
+            "radial-gradient(ellipse at center, #21150f 0%, #100a08 55%, #080504 100%)",
+          opacity: visible ? 1 : 0,
+          transition: "opacity 750ms ease",
+          pointerEvents: "all",
+          overflow: "hidden",
+        }}
+      >
+        {/* Subtle ornamental circles */}
+        <div
+          className="wedding-loader-ornament"
+          style={{
+            position: "absolute",
+            width: "min(85vw, 520px)",
+            aspectRatio: "1",
+            border: "1px solid rgba(200,164,93,0.10)",
+            borderRadius: "50%",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: "12%",
+              border: "1px solid rgba(200,164,93,0.13)",
+              borderRadius: "50%",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: "24%",
+              border: "1px dashed rgba(200,164,93,0.13)",
+              borderRadius: "50%",
+            }}
+          />
+        </div>
+
+        <div
+          className="wedding-loader-content"
+          style={{
+            position: "relative",
+            zIndex: 2,
+            width: "min(85%, 360px)",
+            textAlign: "center",
+            color: "#e8cf9b",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 11,
+              letterSpacing: "0.42em",
+              color: "#b8955c",
+              marginBottom: 32,
+            }}
+          >
+            THE CELEBRATION OF LOVE
+          </div>
+
+          <div
+            style={{
+              fontSize: "clamp(35px, 9vw, 55px)",
+              fontFamily: "Georgia, serif",
+              fontWeight: 400,
+              letterSpacing: "-0.04em",
+              whiteSpace: "nowrap",
+              textShadow: "0 2px 25px rgba(200,164,93,0.15)",
+            }}
+          >
+            Rishabh
+          </div>
+
+          <div
+            style={{
+              fontFamily: "Georgia, serif",
+              fontSize: 27,
+              fontStyle: "italic",
+              color: "#c8a45d",
+              margin: "2px 0",
+            }}
+          >
+            &amp;
+          </div>
+
+          <div
+            style={{
+              fontSize: "clamp(35px, 9vw, 55px)",
+              fontFamily: "Georgia, serif",
+              fontWeight: 400,
+              letterSpacing: "-0.04em",
+              whiteSpace: "nowrap",
+              textShadow: "0 2px 25px rgba(200,164,93,0.15)",
+            }}
+          >
+            Diksha
+          </div>
+
+          <div
+            style={{
+              width: 48,
+              height: 1,
+              background: "#c8a45d",
+              margin: "30px auto 25px",
+              opacity: 0.7,
+            }}
+          />
+
+          <div
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.3em",
+              color: "#c8a45d",
+              marginBottom: 22,
+            }}
+          >
+            PREPARING YOUR EXPERIENCE
+          </div>
+
+          {/* Progress bar */}
+          <div
+            style={{
+              width: "100%",
+              height: 2,
+              background: "rgba(200,164,93,0.16)",
+              overflow: "hidden",
+              position: "relative",
+            }}
+          >
+            <div
+              style={{
+                height: "100%",
+                width: `${progress}%`,
+                background:
+                  "linear-gradient(90deg, #9d753c, #f5dfaa, #c8a45d)",
+                transition: "width 350ms ease",
+                boxShadow: "0 0 12px rgba(200,164,93,0.5)",
+              }}
+            />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: 13,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 9,
+                letterSpacing: "0.2em",
+                color: "#8e795a",
+              }}
+            >
+              PLEASE WAIT
+            </span>
+
+            <span
+              style={{
+                fontSize: 11,
+                letterSpacing: "0.12em",
+                color: "#d9bb83",
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {progress}%
+            </span>
+          </div>
+
+          <div
+            style={{
+              marginTop: 38,
+              fontFamily: "Georgia, serif",
+              fontSize: 12,
+              fontStyle: "italic",
+              color: "rgba(232,207,155,0.55)",
+              letterSpacing: "0.04em",
+            }}
+          >
+            A beautiful beginning awaits...
+          </div>
+
+          <div
+            className="wedding-loader-dot"
+            style={{
+              width: 4,
+              height: 4,
+              borderRadius: "50%",
+              background: "#d9bb83",
+              margin: "25px auto 0",
+            }}
+          />
+        </div>
+      </div>
+    </>
+  );
+}
