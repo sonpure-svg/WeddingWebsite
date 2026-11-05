@@ -6,6 +6,7 @@ import {
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import FireworksBackground from "./FireworksBackground";
 import {
   CalendarIcon,
   CornerFlourish,
@@ -200,8 +201,16 @@ function SectionHeading({
 /* Cover (intro)                                                      */
 /* ------------------------------------------------------------------ */
 
-export function Cover({ opened, onOpen }: { opened: boolean; onOpen: () => void }) {
+
+export function Cover({
+  opened,
+  onOpen,
+}: {
+  opened: boolean;
+  onOpen: () => void;
+}) {
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
@@ -209,7 +218,8 @@ export function Cover({ opened, onOpen }: { opened: boolean; onOpen: () => void 
 
   const step = (i: number) => ({
     opacity: mounted && !opened ? 1 : 0,
-    transform: mounted && !opened ? "translateY(0)" : "translateY(16px)",
+    transform:
+      mounted && !opened ? "translateY(0)" : "translateY(16px)",
     transition: `opacity 0.9s ease ${200 + i * 120}ms, transform 0.9s ease ${200 + i * 120}ms`,
   });
 
@@ -224,16 +234,28 @@ export function Cover({ opened, onOpen }: { opened: boolean; onOpen: () => void 
       }}
       aria-hidden={opened}
     >
+      {/* Background image */}
       <div className="absolute inset-0">
         <img
           alt="Couple"
           src="/images/couple/invite-cover.jpg"
           className="object-cover"
-          style={{ position: "absolute", height: "100%", width: "100%", left: 0, top: 0 }}
+          style={{
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+            left: 0,
+            top: 0,
+          }}
         />
-
       </div>
-      <div className="absolute inset-0" style={{ background: "var(--color-overlay-photo)" }} />
+
+      {/* Background overlays */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "var(--color-overlay-photo)" }}
+      />
+
       <div
         className="absolute inset-0"
         style={{
@@ -241,87 +263,320 @@ export function Cover({ opened, onOpen }: { opened: boolean; onOpen: () => void 
             "linear-gradient(to top, color-mix(in srgb, var(--color-overlay-base) 96%, transparent) 0%, color-mix(in srgb, var(--color-overlay-base) 72%, transparent) 32%, color-mix(in srgb, var(--color-overlay-base) 18%, transparent) 62%, color-mix(in srgb, var(--color-overlay-base) 8%, transparent) 100%)",
         }}
       />
+
       <div
         className="absolute inset-0"
-        style={{ background: "linear-gradient(to bottom, color-mix(in srgb, var(--color-overlay-base) 45%, transparent) 0%, transparent 30%)" }}
+        style={{
+          background:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--color-overlay-base) 45%, transparent) 0%, transparent 30%)",
+        }}
       />
+
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 70%, var(--color-gold-glow-08) 0%, transparent 70%)" }}
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 70%, var(--color-gold-glow-08) 0%, transparent 70%)",
+        }}
       />
 
-      <GaneshaOrnament size={18} className="pointer-events-none absolute top-4 left-4 sm:top-7 sm:left-7 rotate-[135deg]" style={{ color: "var(--color-gold-glow-40)" }} />
-      <GaneshaOrnament size={18} className="pointer-events-none absolute top-4 right-4 sm:top-7 sm:right-7 rotate-[225deg]" style={{ color: "var(--color-gold-glow-40)" }} />
-      <GaneshaOrnament size={18} className="pointer-events-none absolute bottom-4 left-4 sm:bottom-7 sm:left-7 rotate-45" style={{ color: "var(--color-gold-glow-40)" }} />
-      <GaneshaOrnament size={18} className="pointer-events-none absolute bottom-4 right-4 sm:bottom-7 sm:right-7 -rotate-45" style={{ color: "var(--color-gold-glow-40)" }} />
+      {/* Corner ornaments */}
+      <GaneshaOrnament
+        size={18}
+        className="pointer-events-none absolute top-4 left-4 sm:top-7 sm:left-7 rotate-[135deg]"
+        style={{ color: "var(--color-gold-glow-40)" }}
+      />
 
+      <GaneshaOrnament
+        size={18}
+        className="pointer-events-none absolute top-4 right-4 sm:top-7 sm:right-7 rotate-[225deg]"
+        style={{ color: "var(--color-gold-glow-40)" }}
+      />
+
+      <GaneshaOrnament
+        size={18}
+        className="pointer-events-none absolute bottom-4 left-4 sm:bottom-7 sm:left-7 rotate-45"
+        style={{ color: "var(--color-gold-glow-40)" }}
+      />
+
+      <GaneshaOrnament
+        size={18}
+        className="pointer-events-none absolute bottom-4 right-4 sm:bottom-7 sm:right-7 -rotate-45"
+        style={{ color: "var(--color-gold-glow-40)" }}
+      />
+
+      {/* Gold border */}
       <div
         className="pointer-events-none absolute"
-        style={{ inset: "clamp(14px, 4vw, 13px)", border: "1px solid var(--color-gold-border)" }}
+        style={{
+          inset: "clamp(14px, 4vw, 13px)",
+          border: "1px solid var(--color-gold-border)",
+        }}
       />
 
+      {/* Main layout */}
       <div
-        className="relative z-10 flex w-full flex-col items-center justify-end px-6 pb-14 text-center sm:justify-center sm:pb-0"
-        style={{ minHeight: "100dvh" }}
+        className="relative z-10 flex w-full flex-col items-center justify-between px-5 text-center"
+        style={{
+          height: "100dvh",
+          paddingTop: "clamp(25px, 4vh, 45px)",
+          paddingBottom: "clamp(45px, 6vh, 65px)",
+        }}
       >
-        <p className="mb-1.5" style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "var(--color-gold-accent)", ...step(0) }}>
-          <span className="opacity-75">ॐ</span>
-        </p>
-        <p className="mb-2 font-display italic" style={{ fontSize: "clamp(1.2rem, 3.8vw, 1.7rem)", color: "var(--color-gold-accent)", ...step(1) }}>
-          श्री गणेशाय नमः
-        </p>
-        <p className="mb-7 font-cinzel uppercase tracking-[0.28em]" style={{ fontSize: "clamp(0.58rem, 1.9vw, 0.7rem)", color: "var(--color-gold-accent)", ...step(2) }}>
-          With The Blessings Of Lord Ganesha
-        </p>
-        <h1 className="font-display" style={{ fontSize: "clamp(3.8rem, 14vw, 8.5rem)", lineHeight: 0.88, letterSpacing: "-0.03em", color: "var(--color-name-text)", textShadow: "0 2px 12px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5)", ...step(3) }}>
-          Rishabh
-        </h1>
-        <div className="my-1 font-display italic" style={{ fontSize: "clamp(1.5rem, 4vw, 2.8rem)", color: "var(--color-gold-accent)", opacity: mounted && !opened ? 1 : 0, transition: "opacity 0.9s ease 700ms" }}>
-          ❦
+        {/* TOP: Ganesh blessings */}
+        <div className="flex flex-col items-center">
+          <p
+            className="mb-1"
+            style={{
+              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+              color: "var(--color-gold-accent)",
+              ...step(0),
+            }}
+          >
+            <span className="opacity-75">ॐ</span>
+          </p>
+
+          <p
+            className="mb-2 font-display italic"
+            style={{
+              fontSize: "clamp(1.4rem, 3.8vw, 1.7rem)",
+              color: "var(--color-gold-accent)",
+              ...step(1),
+            }}
+          >
+            श्री गणेशाय नमः
+          </p>
+
+          <p
+            className="font-cinzel font-bold uppercase tracking-[0.22em]"
+            style={{
+              fontSize: "clamp(0.62rem, 2.2vw, 0.8rem)",
+              lineHeight: 1.5,
+              color: "var(--color-gold-accent)",
+              maxWidth: "320px",
+              ...step(2),
+            }}
+          >
+            With The Blessings Of Lord Ganesha
+          </p>
         </div>
-        <h1 className="font-display" style={{ fontSize: "clamp(3.8rem, 14vw, 8.5rem)", lineHeight: 0.88, letterSpacing: "-0.03em", color: "var(--color-name-text)", textShadow: "0 2px 12px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5)", ...step(4) }}>
-          Diksha
-        </h1>
-        <div style={{ opacity: mounted && !opened ? 1 : 0, transition: "opacity 0.9s ease 900ms" }}>
-          <div className="flex items-center justify-center gap-3 my-2 my-6">
-            <span className="h-px w-20" style={{ background: "linear-gradient(to right, transparent, var(--color-gold-dim))" }} />
+
+        {/* MIDDLE: Couple names in one line */}
+        {/* <div className="flex w-full items-center justify-center whitespace-nowrap">
+          <h1
+            className="font-display"
+            style={{
+              fontSize: "clamp(2rem, 10vw, 5.5rem)",
+              lineHeight: 1,
+              letterSpacing: "-0.035em",
+              color: "var(--color-name-text)",
+              textShadow:
+                "0 2px 12px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5)",
+              ...step(3),
+            }}
+          >
+            Rishabh
+          </h1>
+
+          <span
+            className="mx-2 font-display italic"
+            style={{
+              fontSize: "clamp(1.3rem, 4vw, 2.5rem)",
+              color: "var(--color-gold-accent)",
+              opacity: mounted && !opened ? 1 : 0,
+              transition: "opacity 0.9s ease 700ms",
+            }}
+          >
+            ❦
+          </span>
+
+          <h1
+            className="font-display"
+            style={{
+              fontSize: "clamp(2rem, 10vw, 5.5rem)",
+              lineHeight: 1,
+              letterSpacing: "-0.035em",
+              color: "var(--color-name-text)",
+              textShadow:
+                "0 2px 12px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5)",
+              ...step(4),
+            }}
+          >
+            Diksha
+          </h1>
+        </div> */}
+
+        {/* BOTTOM: Wedding details and button */}
+        <div className="flex w-full flex-col items-center">
+          {/* Couple names - immediately above divider */}
+          <div className="mb-2 flex w-full items-center justify-center whitespace-nowrap">
+
+            <h1
+              className="font-display"
+              style={{
+                fontSize: "clamp(2rem, 10vw, 5.5rem)",
+                lineHeight: 1,
+                letterSpacing: "-0.035em",
+                color: "var(--color-name-text)",
+                textShadow:
+                  "0 2px 12px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5)",
+                ...step(3),
+              }}
+            >
+              Rishabh
+            </h1>
+
+            <span
+              className="mx-2 font-display italic"
+              style={{
+                fontSize: "clamp(1.3rem, 4vw, 2.5rem)",
+                color: "var(--color-gold-accent)",
+                opacity: mounted && !opened ? 1 : 0,
+                transition: "opacity 0.9s ease 700ms",
+              }}
+            >
+              ❦
+            </span>
+
+            <h1
+              className="font-display"
+              style={{
+                fontSize: "clamp(2rem, 10vw, 5.5rem)",
+                lineHeight: 1,
+                letterSpacing: "-0.035em",
+                color: "var(--color-name-text)",
+                textShadow:
+                  "0 2px 12px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.5)",
+                ...step(4),
+              }}
+            >
+              Diksha
+            </h1>
+
+          </div>
+          {/* Decorative divider */}
+          <div
+            className="flex w-full items-center justify-center gap-3"
+            style={{
+              opacity: mounted && !opened ? 1 : 0,
+              transition: "opacity 0.9s ease 900ms",
+            }}
+          >
+            <span
+              className="h-px flex-1 max-w-20"
+              style={{
+                background:
+                  "linear-gradient(to right, transparent, var(--color-gold-dim))",
+              }}
+            />
+
             <div className="flex items-center gap-2 text-gold">
               <GaneshaOrnament size={16} className="opacity-60" />
-              <DividerSymbol size={22} style={{ filter: "drop-shadow(0 0 6px rgba(200,164,93,0.5))" }} />
+
+              <DividerSymbol
+                size={22}
+                style={{
+                  filter:
+                    "drop-shadow(0 0 6px rgba(200,164,93,0.5))",
+                }}
+              />
+
               <GaneshaOrnament size={16} className="opacity-60" />
             </div>
-            <span className="h-px w-20" style={{ background: "linear-gradient(to left, transparent, var(--color-gold-dim))" }} />
+
+            <span
+              className="h-px flex-1 max-w-20"
+              style={{
+                background:
+                  "linear-gradient(to left, transparent, var(--color-gold-dim))",
+              }}
+            />
           </div>
-        </div>
-        <p className="mt-1.5 font-cinzel uppercase tracking-[0.28em]" style={{ fontSize: "clamp(0.62rem, 2.2vw, 0.75rem)", color: "var(--color-gold-accent)", ...step(5) }}>
-          शुभ विवाह ✦ मंगलम्
-        </p>
-        <div className="mt-10" style={{ ...step(6) }}>
-          <button
-            onClick={onOpen}
-            className="group relative overflow-hidden px-10 py-4 cursor-pointer"
-            style={{ border: "1px solid var(--color-gold-border-md)" }}
-            aria-label="Open Invite"
+
+          {/* शुभ विवाह */}
+          <p
+            className="mt-6 font-display"
+            style={{
+              fontSize: "clamp(0.85rem, 2.5vw, 1.1rem)",
+              color: "var(--color-gold-accent)",
+              ...step(5),
+            }}
           >
-            <Shimmer />
-            <span className="relative font-cinzel uppercase tracking-[0.4em] text-gold-light" style={{ fontSize: "clamp(0.62rem, 2.4vw, 0.72rem)" }}>
-              Open Invite
-            </span>
-          </button>
+            शुभ विवाह ✦ मंगलम्
+          </p>
+
+          {/* Groom message */}
+          <p
+            className="mt-4 font-cinzel uppercase tracking-[0.16em]"
+            style={{
+              fontSize: "clamp(0.48rem, 1.8vw, 0.7rem)",
+              color: "var(--color-gold-accent)",
+              ...step(5),
+            }}
+          >
+            This Art is created by Groom with Lots of Love
+          </p>
+
+          {/* Open Invite button */}
+          <div className="mt-7" style={{ ...step(6) }}>
+            <button
+              onClick={(e) => {
+                e.currentTarget.blur();
+                onOpen();
+              }}
+              className="group relative overflow-hidden px-10 py-4 cursor-pointer"
+              style={{
+                border: "1px solid var(--color-gold-border-md)",
+              }}
+              aria-label="Open Invite"
+            >
+              <Shimmer />
+
+              <span
+                className="relative font-cinzel uppercase tracking-[0.4em] text-gold-light"
+                style={{
+                  fontSize: "clamp(0.62rem, 2.4vw, 0.72rem)",
+                }}
+              >
+                Open Invite
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+
 /* ------------------------------------------------------------------ */
 /* Hero                                                               */
 /* ------------------------------------------------------------------ */
 
-export function Hero() {
+export function Hero({
+  videoRef,
+  opened,
+}: {
+  videoRef: React.RefObject<HTMLVideoElement | null>;
+  opened: boolean;
+}) {
+  const [showScroll, setShowScroll] = useState(false);
+
+  useEffect(() => {
+    if (!opened) {
+      setShowScroll(false);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setShowScroll(true);
+    }, 10000); // 10 seconds AFTER Open Invite
+
+    return () => clearTimeout(timer);
+  }, [opened]);
   return (
     <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-black">
-      <video muted playsInline autoPlay preload="auto" className="absolute inset-0 h-full w-full object-cover object-center" style={{ transform: "scale(1.06)" }}>
+      <video ref={videoRef} muted playsInline preload="auto" className="absolute inset-0 h-full w-full object-cover object-center" style={{ transform: "scale(1.06)" }}>
         <source src="/video/wedding-bg.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 z-10" style={{ background: "var(--color-black-42)" }} />
@@ -338,7 +593,7 @@ export function Hero() {
           </div>
         </Reveal>
         <Reveal y={24} delay={150}>
-          <p className="mb-10 font-cinzel uppercase tracking-[0.65em]" style={{ fontSize: "clamp(0.48rem, 1.6vw, 0.6rem)", color: "var(--color-gold-accent)" }}>
+          <p className="mb-10 font-cinzel font-bold uppercase tracking-[0.65em]" style={{ fontSize: "clamp(0.58rem, 1.6vw, 0.6rem)", color: "var(--color-gold-accent)", transform: "scaleY(1.55)" }}>
             Celebrating Love & Tradition
           </p>
         </Reveal>
@@ -355,6 +610,55 @@ export function Hero() {
           </div>
         </Reveal>
       </div>
+
+      <div
+        className="pointer-events-none absolute bottom-24 left-1/2 z-30 -translate-x-1/2"
+        style={{
+          opacity: showScroll ? 1 : 0,
+          transition: "opacity 1s ease",
+        }}
+      >
+        <div className="flex flex-col items-center">
+
+          {/* Animated Arrow */}
+          <div className="scroll-arrow">
+            <svg
+              stroke="currentColor"
+              fill="none"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="mb-2"
+              height="72"
+              width="72"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{
+                color: "#f2bd3791",
+              }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18"
+              />
+            </svg>
+            <span
+              style={{
+                color: "#f2bd3791",
+                fontSize: "clamp(0.8rem, 1.2vw, 1rem)",
+                letterSpacing: "0.5em",
+                textTransform: "uppercase",
+              }}
+            >
+              Scroll
+            </span>
+          </div>
+
+
+
+        </div>
+      </div>
+
     </section>
   );
 }
@@ -381,16 +685,16 @@ export function Mantra() {
           </Reveal>
           <Reveal y={20} delay={150}>
             <div className="flex flex-col items-center gap-3">
-              <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1rem, 2.2vw, 1.12rem)", color: "var(--color-cream)", fontStyle: "italic", letterSpacing: "0.03em", lineHeight: 1.8, opacity: 0.92 }}>
+              <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.2rem, 2.2vw, 1.12rem)", color: "var(--color-cream)", fontStyle: "italic", letterSpacing: "0.03em", lineHeight: 1.8, opacity: 0.92 }}>
                 वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ।
               </p>
-              <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1rem, 2.2vw, 1.12rem)", color: "var(--color-cream)", fontStyle: "italic", letterSpacing: "0.03em", lineHeight: 1.8, opacity: 0.92 }}>
+              <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.2rem, 2.2vw, 1.12rem)", color: "var(--color-cream)", fontStyle: "italic", letterSpacing: "0.03em", lineHeight: 1.8, opacity: 0.92 }}>
                 निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥
               </p>
             </div>
           </Reveal>
           <Reveal y={20} delay={300}>
-            <span style={{ fontSize: "clamp(0.62rem, 1.4vw, 0.72rem)", color: "var(--color-gold-accent)", letterSpacing: "0.25em", textTransform: "uppercase" }}>
+            <span className="font-bold" style={{ fontSize: "clamp(1rem, 1.4vw, 0.72rem)", color: "var(--color-gold-accent)", letterSpacing: "0.15em", textTransform: "uppercase" }}>
               — श्री गणेशाय नमः
             </span>
           </Reveal>
@@ -501,10 +805,17 @@ function FlowerShower({ active }: { active: boolean }) {
 }
 
 
-function ScratchCard() {
+function ScratchCard({
+  revealed,
+  setRevealed,
+}: {
+  revealed: boolean;
+  setRevealed: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [revealed, setRevealed] = useState(false);
+  //const [revealed, setRevealed] = useState(false);
+  const [hideScratchText, setHideScratchText] = useState(false);
 
   const drawing = useRef(false);
 
@@ -708,6 +1019,9 @@ function ScratchCard() {
      * FLOWER SHOWER STARTS
      * AFTER 45% SCRATCHED
      */
+    if (pct > 0 && !hideScratchText) {
+      setHideScratchText(true);
+    }
     if (
       pct > 0.45 &&
       !revealed
@@ -720,6 +1034,8 @@ function ScratchCard() {
   const onPointerDown = (
     e: ReactPointerEvent<HTMLCanvasElement>
   ) => {
+    if (revealed) return;
+
     drawing.current = true;
 
     e.currentTarget.setPointerCapture(
@@ -736,7 +1052,7 @@ function ScratchCard() {
   const onPointerMove = (
     e: ReactPointerEvent<HTMLCanvasElement>
   ) => {
-    if (!drawing.current) return;
+    if (!drawing.current || revealed) return;
 
     scratch(
       e.clientX,
@@ -831,7 +1147,25 @@ function ScratchCard() {
 
         </div>
 
-
+        {/* SCRATCH TEXT */}
+        <div
+          className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+          style={{
+            opacity: hideScratchText ? 0 : 1,
+            transition: "opacity 0.6s ease",
+          }}
+        >
+          <p
+            className=" font-bold uppercase tracking-[0.2em]"
+            style={{
+              color: "#4f0f06",
+              fontSize: "clamp(1.0rem, 2vw, 0.8rem)",
+              textShadow: "0 1px 8px rgba(0,0,0,0.35)",
+            }}
+          >
+            Scratch The Golden Foil
+          </p>
+        </div>
         {/* GOLD SCRATCH LAYER */}
         <canvas
           ref={canvasRef}
@@ -840,10 +1174,18 @@ function ScratchCard() {
             inset-0
             h-full
             w-full
-            touch-none
+            
           "
           style={{
-            cursor: "crosshair",
+            cursor: revealed ? "default" : "crosshair",
+
+            pointerEvents: revealed
+              ? "none"
+              : "auto",
+
+            touchAction: revealed
+              ? "auto"
+              : "none",
 
             opacity:
               revealed ? 0 : 1,
@@ -861,6 +1203,10 @@ function ScratchCard() {
           }
 
           onPointerUp={
+            onPointerUp
+          }
+
+          onPointerCancel={
             onPointerUp
           }
 
@@ -885,6 +1231,7 @@ function ScratchCard() {
 /* ------------------------------------------------------------------ */
 
 export function CountdownSection() {
+  const [revealed, setRevealed] = useState(false);
   const { days, hours, minutes, seconds } = useCountdown(WEDDING_DATE);
 
   const box = (value: number, label: string, delay: number) => (
@@ -899,7 +1246,7 @@ export function CountdownSection() {
             </span>
           </div>
         </div>
-        <span className="font-cinzel uppercase tracking-[0.38em] text-gold" style={{ fontSize: "clamp(0.48rem, 1.4vw, 0.62rem)", opacity: 0.75 }}>
+        <span className="font-cinzel font-bold uppercase tracking-[0.38em] text-gold" style={{ fontSize: "clamp(0.68rem, 1.4vw, 0.62rem)", opacity: 0.75 }}>
           {label}
         </span>
       </div>
@@ -917,10 +1264,12 @@ export function CountdownSection() {
 
   return (
     <section className="relative flex flex-col items-center justify-center overflow-hidden px-6 py-24 sm:py-32" style={{ background: "var(--color-dark)" }}>
+      {/* FIREWORKS ACROSS THE WHOLE COUNTDOWN SECTION */}
+      <FireworksBackground active={revealed} />
       <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse 65% 50% at 50% 50%, var(--color-gold-glow-05) 0%, transparent 70%)" }} />
       <div className="relative z-10 flex w-full max-w-3xl flex-col items-center text-center">
         <Reveal y={32}>
-          <p className="mb-8 font-cinzel uppercase tracking-[0.6em] text-gold" style={{ fontSize: "clamp(0.85rem, 1.5vw, 0.9rem)" }}>
+          <p className="mb-8 font-cinzel font-bold uppercase tracking-[0.6em] text-gold" style={{ fontSize: "clamp(0.85rem, 1.5vw, 0.9rem)" }}>
             Until Two Souls Become One
           </p>
         </Reveal>
@@ -937,13 +1286,16 @@ export function CountdownSection() {
 
         <div className="flex w-full flex-col items-center gap-5">
           <Reveal y={24} delay={300} className="w-full">
-            <ScratchCard />
+            <ScratchCard
+              revealed={revealed}
+              setRevealed={setRevealed}
+            />
           </Reveal>
-          <Reveal y={24} delay={400}>
-            <p className="uppercase tracking-[0.2em]" style={{ color: "var(--color-gold-accent)", opacity: 0.7, fontSize: "clamp(0.6rem, 1.8vw, 0.7rem)" }}>
+          {/* <Reveal y={24} delay={400}>
+            <p className="uppercase font-bold tracking-[0.2em]" style={{ color: "var(--color-gold-accent)", opacity: 0.7, fontSize: "clamp(0.6rem, 1.8vw, 0.7rem)" }}>
               ✦&nbsp;&nbsp;Scratch The Golden Foil&nbsp;&nbsp;✦
             </p>
-          </Reveal>
+          </Reveal> */}
         </div>
 
         <Reveal y={32} delay={500}>
@@ -957,7 +1309,7 @@ export function CountdownSection() {
             >
               <Shimmer />
               <CalendarIcon size={13} />
-              <span className="relative font-cinzel uppercase tracking-[0.42em] text-gold-light" style={{ fontSize: "clamp(0.65rem, 1.8vw, 0.58rem)", opacity: 0.85 }}>
+              <span className="relative font-cinzel font-bold uppercase tracking-[0.42em] text-gold-light" style={{ fontSize: "clamp(0.65rem, 1.8vw, 0.58rem)", opacity: 0.85 }}>
                 Add To Calendar
               </span>
             </a>
@@ -1057,6 +1409,7 @@ export function Story() {
 export function BrideGroom() {
   return (
     <section className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6 overflow-hidden" style={{ background: "var(--color-dark)" }}>
+      <FireworksBackground active={true} />
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 55% 40% at 50% 50%, var(--color-gold-glow-04) 0%, transparent 100%)" }} />
       <Reveal y={24} className="relative w-full max-w-[340px] sm:max-w-sm md:max-w-md mx-auto bg-dark3 rounded-sm px-6 sm:px-8 md:px-10 py-10 sm:py-12 md:py-14 text-center" style={{ border: "1px solid var(--color-gold-border-sm)", boxShadow: "0 0 40px var(--color-gold-glow-04), inset 0 0 28px var(--color-gold-glow-03)" }}>
         <CornerFlourish size={32} className="absolute w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 top-3 left-3" style={{ color: "var(--color-gold)", opacity: 0.45 }} />
@@ -1067,22 +1420,22 @@ export function BrideGroom() {
         <p className="font-cinzel uppercase mb-2 sm:mb-3" style={{ fontSize: "clamp(1.5rem, 1.8vw, 0.75rem)", letterSpacing: "0.15em", color: "var(--color-gold)", opacity: 0.9 }}>
           वर परिचय
         </p>
-        <h3 className="font-display text-gold-heading font-light leading-none mb-1" style={{ fontSize: "clamp(1.6rem, 7vw, 2.75rem)" }}>
+        <h3 className="font-display text-gold-heading font-bold leading-none mb-1" style={{ fontSize: "clamp(1.8rem, 7vw, 2.75rem)" }}>
           Rishabh
         </h3>
-        <p className="font-display italic mb-4 sm:mb-6" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.85 }}>
+        <p className="font-display italic mb-4 sm:mb-6" style={{ fontSize: "clamp(1rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.85 }}>
           The Groom
         </p>
-        <p className="font-body leading-relaxed" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
+        <p className="font-body leading-relaxed" style={{ fontSize: "clamp(1.2rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
           S/o. Smt. Jyoti Sonpure
         </p>
-        <p className="font-body my-1" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-gold)" }}>
+        <p className="font-body my-1" style={{ fontSize: "clamp(1.2rem, 2vw, 1rem)", color: "var(--color-gold)" }}>
           &
         </p>
-        <p className="font-body leading-relaxed mb-2" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
+        <p className="font-body leading-relaxed mb-2" style={{ fontSize: "clamp(1.2rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
           Sh. Deepak Sonpure
         </p>
-        <p className="font-cinzel uppercase mt-2" style={{ fontSize: "clamp(0.62rem, 1.6vw, 0.72rem)", letterSpacing: "0.25em", color: "var(--color-gold-accent)", opacity: 0.8 }}>
+        <p className="font-cinzel uppercase mt-2" style={{ fontSize: "clamp(0.8rem, 1.6vw, 0.72rem)", letterSpacing: "0.25em", color: "var(--color-gold-accent)", opacity: 0.8 }}>
           [Itarsi, M.P.]
         </p>
 
@@ -1098,22 +1451,22 @@ export function BrideGroom() {
         <p className="font-cinzel uppercase mb-2 sm:mb-3" style={{ fontSize: "clamp(1.5rem, 1.8vw, 0.75rem)", letterSpacing: "0.15em", color: "var(--color-gold)", opacity: 0.9 }}>
           वधू परिचय
         </p>
-        <h3 className="font-display text-gold-heading font-light leading-none mb-1" style={{ fontSize: "clamp(1.6rem, 7vw, 2.75rem)" }}>
+        <h3 className="font-display text-gold-heading font-bold leading-none mb-1" style={{ fontSize: "clamp(1.8rem, 7vw, 2.75rem)" }}>
           Diksha
         </h3>
-        <p className="font-display italic mb-4 sm:mb-6" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.85 }}>
+        <p className="font-display italic mb-4 sm:mb-6" style={{ fontSize: "clamp(1rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.85 }}>
           The Bride
         </p>
-        <p className="font-body leading-relaxed" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
+        <p className="font-body leading-relaxed" style={{ fontSize: "clamp(1.2rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
           D/o. Smt. Seema Binjwe
         </p>
-        <p className="font-body my-1" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-gold)" }}>
+        <p className="font-body my-1" style={{ fontSize: "clamp(1.2rem, 2vw, 1rem)", color: "var(--color-gold)" }}>
           &
         </p>
-        <p className="font-body leading-relaxed mb-2" style={{ fontSize: "clamp(0.88rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
+        <p className="font-body leading-relaxed mb-2" style={{ fontSize: "clamp(1.2rem, 2vw, 1rem)", color: "var(--color-cream)", opacity: 0.88 }}>
           Sh. Jagdish Binjwe
         </p>
-        <p className="font-cinzel uppercase mt-2" style={{ fontSize: "clamp(0.62rem, 1.6vw, 0.72rem)", letterSpacing: "0.25em", color: "var(--color-gold-accent)", opacity: 0.8 }}>
+        <p className="font-cinzel uppercase mt-2" style={{ fontSize: "clamp(0.8rem, 1.6vw, 0.72rem)", letterSpacing: "0.25em", color: "var(--color-gold-accent)", opacity: 0.8 }}>
           [Andhariya,Amla, M.P.]
         </p>
 
@@ -1161,7 +1514,7 @@ export function Events() {
                       <div className="absolute inset-0" style={{ background: ev.reverse ? "linear-gradient(to left, var(--color-surface-2xs) 50%, var(--color-surface-lg) 100%)" : "linear-gradient(to right, var(--color-surface-2xs) 50%, var(--color-surface-lg) 100%)" }} />
                       <div className="absolute inset-0 lg:hidden" style={{ background: "transparent" }} />
                     </div>
-                    <div className={`relative order-2 flex flex-1 flex-col justify-center px-8 py-9 sm:px-10 lg:py-10 ${ev.reverse ? "lg:order-1" : "lg:order-2"}`} style={{background: "var(--color-surface-content)",backdropFilter: "blur(8px)",}}>
+                    <div className={`relative order-2 flex flex-1 flex-col justify-center px-8 py-9 sm:px-10 lg:py-10 ${ev.reverse ? "lg:order-1" : "lg:order-2"}`} style={{ background: "var(--color-surface-content)", backdropFilter: "blur(8px)", }}>
                       <div className="mb-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <span className="inline-block" style={{ width: 18, height: 2, background: "var(--color-gold-line)" }} />
@@ -1242,35 +1595,507 @@ export function Events() {
 /* ------------------------------------------------------------------ */
 
 const gallery = [
-  { src: "/images/couple/fort-view.jpeg", alt: "Bride and groom making memories" },
-  { src: "/images/couple/couple.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07345.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07620.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07325.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07375.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07414.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07486.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07503.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07542.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07632.jpg", alt: "Bride and groom" },
+  { src: "/images/gallery/DSC07633.jpg", alt: "Bride and groom" },
 ];
 
 export function Gallery() {
-  return (
-    <section className="relative overflow-hidden px-4 py-24 sm:px-6 sm:py-32" style={{ background: "var(--color-dark)" }}>
-      <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 40% at 50% 10%, var(--color-gold-glow-04) 0%, transparent 70%)" }} />
-      <div className="relative z-10 mx-auto max-w-6xl">
-        <SectionHeading eyebrow="Moments Together" title="The Gallery" />
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-        <div className="gap-3 sm:gap-4" style={{ columnCount: "var(--cols, 2)", columnGap: "inherit" }}>
-          <style>{`@media (min-width: 768px) { :root { --cols: 3; } } @media (max-width: 767px) { :root { --cols: 2; } }`}</style>
-          {gallery.map((g, i) => (
-            <Reveal y={32} scale={0.98} delay={i * 150} key={g.src} className="mb-3 break-inside-avoid sm:mb-4">
-              <div className="group relative cursor-pointer overflow-hidden" style={{ aspectRatio: "2/3", border: "1px solid var(--color-gold-glow-10)" }}>
-                <img alt={g.alt} src={g.src} loading="lazy" className="object-cover object-center transition-transform duration-700 group-hover:scale-105" style={{ position: "absolute", height: "100%", width: "100%", left: 0, top: 0 }} />
-                <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: "linear-gradient(to top, var(--color-surface-lg) 0%, var(--color-surface-2xs) 60%)" }} />
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0" style={{ transform: "translateY(8px)" }}>
-                  <span className="font-cinzel uppercase tracking-[0.4em] text-gold-light" style={{ fontSize: "0.6rem" }}>
-                    View
-                  </span>
+  const [previewCount, setPreviewCount] = useState(2);
+
+  const touchStartX = useRef<number | null>(null);
+  //const [showWeddingPhotos, setShowWeddingPhotos] = useState(false);
+  /* ============================================================= */
+  /* RESPONSIVE PREVIEW COUNT                                      */
+  /* ============================================================= */
+
+  useEffect(() => {
+    const updatePreviewCount = () => {
+      const width = window.innerWidth;
+
+      if (width < 640) {
+        setPreviewCount(2);
+      } else if (width < 1024) {
+        setPreviewCount(3);
+      } else {
+        setPreviewCount(4);
+      }
+    };
+
+    updatePreviewCount();
+
+    window.addEventListener("resize", updatePreviewCount);
+
+    return () => {
+      window.removeEventListener(
+        "resize",
+        updatePreviewCount
+      );
+    };
+  }, []);
+
+  /* ============================================================= */
+  /* OPEN GALLERY                                                  */
+  /* ============================================================= */
+
+  const openGallery = (index = 0) => {
+    setCurrentIndex(index);
+    setGalleryOpen(true);
+
+    document.body.style.overflow = "hidden";
+  };
+
+  /* ============================================================= */
+  /* CLOSE GALLERY                                                 */
+  /* ============================================================= */
+
+  const closeGallery = () => {
+    setGalleryOpen(false);
+
+    document.body.style.overflow = "";
+  };
+
+  /* ============================================================= */
+  /* NEXT                                                           */
+  /* ============================================================= */
+
+  const nextImage = () => {
+    setCurrentIndex((prev) => {
+      return (prev + 1) % gallery.length;
+    });
+  };
+
+  /* ============================================================= */
+  /* PREVIOUS                                                       */
+  /* ============================================================= */
+
+  const previousImage = () => {
+    setCurrentIndex((prev) => {
+      return (
+        (prev - 1 + gallery.length) %
+        gallery.length
+      );
+    });
+  };
+
+  /* ============================================================= */
+  /* SWIPE START                                                    */
+  /* ============================================================= */
+
+  const handleTouchStart = (
+    e: React.TouchEvent<HTMLDivElement>
+  ) => {
+    touchStartX.current =
+      e.touches[0].clientX;
+  };
+
+  /* ============================================================= */
+  /* SWIPE END                                                      */
+  /* ============================================================= */
+
+  const handleTouchEnd = (
+    e: React.TouchEvent<HTMLDivElement>
+  ) => {
+    if (touchStartX.current === null) return;
+
+    const touchEndX =
+      e.changedTouches[0].clientX;
+
+    const difference =
+      touchStartX.current - touchEndX;
+
+    const swipeDistance = 50;
+
+    if (Math.abs(difference) > swipeDistance) {
+      if (difference > 0) {
+        nextImage();
+      } else {
+        previousImage();
+      }
+    }
+
+    touchStartX.current = null;
+  };
+
+  /* ============================================================= */
+  /* KEYBOARD                                                       */
+  /* ============================================================= */
+
+  useEffect(() => {
+    if (!galleryOpen) return;
+
+    const handleKeyDown = (
+      e: KeyboardEvent
+    ) => {
+      if (e.key === "Escape") {
+        closeGallery();
+      }
+
+      if (e.key === "ArrowRight") {
+        nextImage();
+      }
+
+      if (e.key === "ArrowLeft") {
+        previousImage();
+      }
+    };
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
+  }, [galleryOpen]);
+
+  // if (showWeddingPhotos) {
+  //   return (
+  //     <div className="fixed inset-0 z-[99980] overflow-y-auto bg-[#060204]/[0.98]">
+  //   <WeddingPhotos
+  //     onBack={() => setShowWeddingPhotos(false)}
+  //   />
+  // </div>
+  //   );
+  // }
+
+  /* ============================================================= */
+  /* PREVIEW IMAGES                                                 */
+  /* ============================================================= */
+
+  const previewImages =
+    gallery.slice(0, previewCount);
+
+  return (
+    <>
+      {/* ========================================================= */}
+      {/* GALLERY SECTION                                           */}
+      {/* ========================================================= */}
+
+      <section
+        className="relative overflow-hidden px-4 py-24 sm:px-6 sm:py-32"
+        style={{
+          background: "var(--color-dark)",
+        }}
+      >
+        {/* Background glow */}
+
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 40% at 50% 10%, var(--color-gold-glow-04) 0%, transparent 70%)",
+          }}
+        />
+
+        <div className="relative z-10 mx-auto max-w-6xl">
+
+          {/* Heading */}
+
+          <SectionHeading
+            eyebrow="Moments Together"
+            title="The Gallery"
+          />
+
+          {/* ===================================================== */}
+          {/* PREVIEW GALLERY                                       */}
+          {/* ===================================================== */}
+
+          <div
+            className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4"
+          >
+            {previewImages.map((g, i) => (
+              <Reveal
+                key={g.src}
+                y={32}
+                scale={0.98}
+                delay={i * 150}
+              >
+                <div
+                  className="group relative cursor-pointer overflow-hidden"
+                  style={{
+                    aspectRatio: "2/3",
+                    border:
+                      "1px solid var(--color-gold-glow-10)",
+                  }}
+                  onClick={() =>
+                    openGallery(i)
+                  }
+                >
+                  {/* Image */}
+
+                  <img
+                    src={g.src}
+                    alt={g.alt}
+                    loading={
+                      i < 2
+                        ? "eager"
+                        : "lazy"
+                    }
+                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
+
+                  {/* Hover overlay */}
+
+                  <div
+                    className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    style={{
+                      background:
+                        "linear-gradient(to top, var(--color-surface-lg) 0%, var(--color-surface-2xs) 60%)",
+                    }}
+                  />
+
+                  {/* View */}
+
+                  <div
+                    className="absolute bottom-4 left-0 right-0 flex justify-center opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+                    style={{
+                      transform:
+                        "translateY(8px)",
+                    }}
+                  >
+                    <span
+                      className="font-cinzel uppercase tracking-[0.4em]"
+                      style={{
+                        fontSize: "0.6rem",
+                        color:
+                          "var(--color-gold-light)",
+                      }}
+                    >
+                      View
+                    </span>
+                  </div>
                 </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* ===================================================== */}
+          {/* VIEW MORE                                              */}
+          {/* ===================================================== */}
+
+          {gallery.length >
+            previewCount && (
+              <div className="mt-10 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() =>
+                    openGallery(0)
+                  }
+                  className="group relative overflow-hidden px-8 py-3 font-cinzel uppercase tracking-[0.28em] transition-all duration-300"
+                  style={{
+                    fontSize: "0.65rem",
+                    color:
+                      "var(--color-gold-light)",
+                    border:
+                      "1px solid var(--color-gold-glow-20)",
+                    background:
+                      "var(--color-surface-2xs)",
+                  }}
+                >
+                  {/* Hover background */}
+
+                  <span
+                    className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    style={{
+                      background:
+                        "var(--color-gold-glow-10)",
+                    }}
+                  />
+
+                  <span className="relative z-10 font-bold" style={{ fontSize: "clamp(0.62rem, 2.4vw, 0.72rem)" }}>
+                    View More
+                  </span>
+                </button>
+
               </div>
-            </Reveal>
-          ))}
+
+            )}
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* ========================================================= */}
+      {/* FULL SCREEN SLIDER                                        */}
+      {/* ========================================================= */}
+
+      {galleryOpen && (
+        <div
+          className="fixed inset-0 z-[99999] flex items-center justify-center"
+          style={{
+            background:
+              "rgba(6, 2, 4, 0.97)",
+          }}
+        >
+
+          {/* ===================================================== */}
+          {/* TOP BAR                                               */}
+          {/* ===================================================== */}
+
+          <div className="absolute left-0 right-0 top-0 z-30 flex items-center justify-between px-5 py-5 sm:px-8">
+
+            {/* Back */}
+
+            <button
+              type="button"
+              onClick={closeGallery}
+              className="flex items-center gap-2 font-cinzel uppercase tracking-[0.2em] transition-opacity hover:opacity-70"
+              style={{
+                fontSize: "0.65rem",
+                color:
+                  "var(--color-gold-light)",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "1.2rem",
+                }}
+              >
+                ←
+              </span>
+
+              <span>
+                Back
+              </span>
+            </button>
+
+            {/* Counter */}
+
+            <div
+              className="font-cinzel tracking-[0.2em]"
+              style={{
+                fontSize: "0.65rem",
+                color:
+                  "var(--color-gold-accent)",
+              }}
+            >
+              {currentIndex + 1} /{" "}
+              {gallery.length}
+            </div>
+          </div>
+
+          {/* ===================================================== */}
+          {/* IMAGE AREA                                            */}
+          {/* ===================================================== */}
+
+          <div
+            className="relative flex h-full w-full items-center justify-center px-14 py-24 sm:px-24"
+            onTouchStart={
+              handleTouchStart
+            }
+            onTouchEnd={
+              handleTouchEnd
+            }
+            style={{
+              touchAction: "pan-y",
+            }}
+          >
+
+            {/* Image */}
+
+            <img
+              key={
+                gallery[currentIndex].src
+              }
+              src={
+                gallery[currentIndex].src
+              }
+              alt={
+                gallery[currentIndex].alt
+              }
+              draggable={false}
+              className="max-h-full max-w-full select-none object-contain"
+              style={{
+                filter:
+                  "drop-shadow(0 10px 35px rgba(0,0,0,0.45))",
+              }}
+            />
+
+            {/* ================================================= */}
+            {/* PREVIOUS                                           */}
+            {/* ================================================= */}
+
+            <button
+              type="button"
+              onClick={
+                previousImage
+              }
+              aria-label="Previous image"
+              className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full transition-all duration-300 hover:bg-white/10 sm:left-6 sm:h-14 sm:w-14"
+              style={{
+                color:
+                  "var(--color-gold-light)",
+                border:
+                  "1px solid var(--color-gold-glow-20)",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "2rem",
+                  lineHeight: 1,
+                }}
+              >
+                ‹
+              </span>
+            </button>
+
+            {/* ================================================= */}
+            {/* NEXT                                               */}
+            {/* ================================================= */}
+
+            <button
+              type="button"
+              onClick={nextImage}
+              aria-label="Next image"
+              className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full transition-all duration-300 hover:bg-white/10 sm:right-6 sm:h-14 sm:w-14"
+              style={{
+                color:
+                  "var(--color-gold-light)",
+                border:
+                  "1px solid var(--color-gold-glow-20)",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "2rem",
+                  lineHeight: 1,
+                }}
+              >
+                ›
+              </span>
+            </button>
+          </div>
+
+          {/* ===================================================== */}
+          {/* BOTTOM TEXT                                           */}
+          {/* ===================================================== */}
+
+          <div
+            className="pointer-events-none absolute bottom-6 left-0 right-0 text-center font-bold uppercase tracking-[0.25em]"
+            style={{
+              fontSize: "0.8rem",
+              color:
+                "var(--color-gold-dim)",
+            }}
+          >
+            Swipe or use arrows to explore
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -1690,6 +2515,16 @@ export function Footer() {
             </span>
             Diksha
           </h2>
+        </Reveal>
+        <Reveal y={0} scale={0.82} duration={900}>
+          <div className="relative mb-4 sm:mb-8" style={{ width: "clamp(90px, 18vw, 160px)", height: "clamp(90px, 18vw, 160px)", transform: "translateY(18px)", }}>
+            <div className="absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse 80% 80% at 50% 55%, rgba(200,164,93,0.38) 0%, transparent 70%)", filter: "blur(12px)", transform: "scale(1.3)" }} />
+            <img
+              src="/images/RDLogo.png"
+              className="animate-glow"
+              style={{ position: "absolute", height: "100%", width: "100%", objectFit: "contain", mixBlendMode: "screen", filter: "drop-shadow(0 0 18px rgba(200,164,93,0.70)) drop-shadow(0 0 6px rgba(255,215,80,0.55))" }}
+            />
+          </div>
         </Reveal>
         <Reveal y={20} delay={100}>
           <div className="my-5 flex items-center gap-4">

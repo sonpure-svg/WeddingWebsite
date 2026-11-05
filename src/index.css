@@ -10,7 +10,7 @@
   --color-gold: #e8b020;
   --color-gold-light: #f8cc40;
   --color-gold-dim: #9a7010;
-  --color-gold-accent: #d09818;
+  --color-gold-accent: #f5c24b;
   --color-gold-border: #e8b02033;
   --color-gold-border-md: #e8b020ad;
   --color-gold-border-sm: #e8b0206b;
@@ -38,7 +38,7 @@
   --color-name-text: #fff;
 
   --color-overlay-base: #040103;
-  --color-overlay-photo: #0a030661;
+  --color-overlay-photo: #0a030624;
   --color-surface: #0e04088c;
   --color-surface-xs: #0e04080d;
   --color-surface-sm: #0e040833;
@@ -422,3 +422,19 @@ button,
   }
 
 }
+
+@keyframes weddingScrollBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(12px);
+  }
+}
+
+.scroll-arrow {
+  animation: weddingScrollBounce 1.8s ease-in-out infinite;
+}
+
