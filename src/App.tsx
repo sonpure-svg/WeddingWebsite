@@ -81,19 +81,8 @@ export default function App() {
   const [loaderReady, setLoaderReady] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!loaderReady) return;
-
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.preload = "auto";
-    video.load();
-  }, [loaderReady]);
 
   const handleLoaderComplete = useCallback(() => {
     setLoaderReady(true);
@@ -189,15 +178,6 @@ export default function App() {
 
     window.scrollTo({ top: 0, behavior: "instant" });
 
-    // Start hero video
-    const video = videoRef.current;
-
-    if (video) {
-      video.play().catch((error) => {
-        console.warn("Hero video playback failed:", error);
-      });
-    }
-
     // Start background music
     toggleMusic();
   }, [toggleMusic]);
@@ -251,10 +231,10 @@ export default function App() {
 
       <div className="grain" aria-hidden="true" />
 
-      <Cover opened={opened} onOpen={open} />
+      <Cover opened={opened} onOpen={open} preloaderFinished={loaderReady}/>
 
       <main className="bg-dark min-h-screen" style={{ visibility: opened ? "visible" : "hidden" }}>
-        <Hero videoRef={videoRef} opened={opened} />
+        <Hero opened={opened} />
         <Mantra />
         <CountdownSection />
         <OrnamentDivider />

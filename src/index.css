@@ -438,3 +438,53 @@ button,
   animation: weddingScrollBounce 1.8s ease-in-out infinite;
 }
 
+/* Royal palace cinematic background */
+.hero-palace-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background-image: url("/images/BG.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  transform: scale(1);
+  opacity: 0;
+
+  transition: opacity 2s ease;
+  will-change: transform, opacity;
+}
+
+/* Show background after opening invitation */
+.hero-palace-active {
+  opacity: 1;
+  animation: palace-cinematic-zoom 18s ease-in-out infinite alternate;
+}
+
+/* Slow cinematic camera movement */
+@keyframes palace-cinematic-zoom {
+  0% {
+    transform: scale(1);
+    background-position: center center;
+  }
+
+  100% {
+    transform: scale(1.12);
+    background-position: 52% 46%;
+  }
+}
+
+/* Mobile adjustment */
+@media (max-width: 768px) {
+  .hero-palace-background {
+    background-position: 55% center;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .hero-palace-active {
+    animation: none;
+  }
+}
