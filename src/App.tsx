@@ -89,6 +89,17 @@ export default function App() {
     setLoaderReady(true);
   }, []);
 
+  useEffect(() => {
+    if (!loaderReady) return;
+
+    const video = videoRef.current;
+
+    if (video) {
+      video.preload = "auto";
+      video.load();
+    }
+  }, [loaderReady]);
+
   // useEffect(() => {
   //   if (!opened) {
   //     // Preload important images
