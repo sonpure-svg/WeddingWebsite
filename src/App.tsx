@@ -85,6 +85,16 @@ export default function App() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (!loaderReady) return;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.preload = "auto";
+    video.load();
+  }, [loaderReady]);
+
   const handleLoaderComplete = useCallback(() => {
     setLoaderReady(true);
   }, []);
@@ -175,19 +185,21 @@ export default function App() {
   }, []);
 
   const open = useCallback(() => {
-
     setOpened(true);
 
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0, behavior: "instant" });
 
-    // Start background video
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => { });
+    // Start hero video
+    const video = videoRef.current;
+
+    if (video) {
+      video.play().catch((error) => {
+        console.warn("Hero video playback failed:", error);
+      });
     }
 
-    // Start music
+    // Start background music
     toggleMusic();
-
   }, [toggleMusic]);
 
 

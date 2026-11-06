@@ -71,6 +71,42 @@ function loadImage(src: string): Promise<void> {
     });
 }
 
+const loadVideo = (src: string): Promise<void> => {
+    return new Promise((resolve) => {
+        const video = document.createElement("video");
+
+        video.preload = "auto";
+        video.muted = true;
+        video.playsInline = true;
+
+        const cleanup = () => {
+            video.removeEventListener("canplaythrough", handleReady);
+            video.removeEventListener("error", handleError);
+        };
+
+        const handleReady = () => {
+            cleanup();
+            resolve();
+        };
+
+        const handleError = () => {
+            cleanup();
+            console.error("Hero video failed to load:", src);
+            resolve();
+        };
+
+        video.addEventListener("canplaythrough", handleReady, { once: true });
+        video.addEventListener("error", handleError, { once: true });
+
+        video.src = src;
+        video.load();
+
+        // Handle the case where the browser is already ready.
+        if (video.readyState >= 4) {
+            handleReady();
+        }
+    });
+};
 
 // function loadVideoMetadata(src: string): Promise<void> {
 //     return new Promise((resolve) => {
@@ -166,6 +202,9 @@ export default function Preloader({
 
         const resources = [
             ...criticalImages.map((src) => loadImage(src)),
+
+            loadVideo("/video/wedding-bg.mp4"),
+
             document.fonts?.ready
                 ? document.fonts.ready.then(() => undefined).catch(() => undefined)
                 : Promise.resolve(),
@@ -189,10 +228,7 @@ export default function Preloader({
 
         const finishLoading = async () => {
             // Maximum waiting time, even if a resource is extremely slow.
-            await Promise.race([
-                Promise.all(trackedResources),
-                new Promise<void>((resolve) => window.setTimeout(resolve, 9000)),
-            ]);
+            await Promise.all(trackedResources);
 
             if (cancelled || completed) return;
 
