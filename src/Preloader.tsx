@@ -34,8 +34,6 @@ const criticalImages = [
     "/images/gallery/DSC07633.webp",
 ];
 
-//const HERO_VIDEO = "/video/wedding-bg.mp4";
-
 
 function loadImage(src: string): Promise<void> {
     return new Promise((resolve) => {
@@ -72,121 +70,6 @@ function loadImage(src: string): Promise<void> {
     });
 }
 
-// const loadVideo = (src: string): Promise<void> => {
-//     return new Promise((resolve) => {
-//         const video = document.createElement("video");
-
-//         video.preload = "auto";
-//         video.muted = true;
-//         video.playsInline = true;
-
-//         const cleanup = () => {
-//             video.removeEventListener("canplaythrough", handleReady);
-//             video.removeEventListener("error", handleError);
-//         };
-
-//         const handleReady = () => {
-//             cleanup();
-//             resolve();
-//         };
-
-//         const handleError = () => {
-//             cleanup();
-//             console.error("Hero video failed to load:", src);
-//             resolve();
-//         };
-
-//         video.addEventListener("canplaythrough", handleReady, { once: true });
-//         video.addEventListener("error", handleError, { once: true });
-
-//         video.src = src;
-//         video.load();
-
-//         // Handle the case where the browser is already ready.
-//         if (video.readyState >= 4) {
-//             handleReady();
-//         }
-//     });
-// };
-
-// function loadVideoMetadata(src: string): Promise<void> {
-//     return new Promise((resolve) => {
-//         const video = document.createElement("video");
-//         let finished = false;
-
-//         const finish = () => {
-//             if (finished) return;
-//             finished = true;
-//             video.removeAttribute("src");
-//             video.load();
-//             resolve();
-//         };
-
-//         video.preload = "metadata";
-//         video.onloadedmetadata = finish;
-//         video.onerror = finish;
-
-//         // Never let a slow video block the invitation.
-//         const timeout = window.setTimeout(finish, 4000);
-
-//         const originalFinish = finish;
-
-//         video.onloadedmetadata = () => {
-//             window.clearTimeout(timeout);
-//             originalFinish();
-//         };
-
-//         video.onerror = () => {
-//             window.clearTimeout(timeout);
-//             originalFinish();
-//         };
-
-//         video.src = src;
-//         video.load();
-//     });
-// }
-
-// function prepareHeroVideo(
-//     video: HTMLVideoElement | null
-// ): Promise<void> {
-//     return new Promise((resolve) => {
-//         if (!video) {
-//             resolve();
-//             return;
-//         }
-
-//         let finished = false;
-
-//         const finish = () => {
-//             if (finished) return;
-
-//             finished = true;
-
-//             window.clearTimeout(timeout);
-
-//             video.removeEventListener("canplay", finish);
-//             video.removeEventListener("error", finish);
-
-//             resolve();
-//         };
-
-//         // Video already has enough data to begin playback.
-//         if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
-//             resolve();
-//             return;
-//         }
-
-//         video.preload = "auto";
-
-//         video.addEventListener("canplay", finish);
-//         video.addEventListener("error", finish);
-
-//         // Do not keep guests waiting indefinitely on slow networks.
-//         const timeout = window.setTimeout(finish, 8000);
-
-//         video.load();
-//     });
-// }
 
 export default function Preloader({
     onComplete,

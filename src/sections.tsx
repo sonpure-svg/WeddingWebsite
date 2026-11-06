@@ -530,7 +530,7 @@ export function Cover({
                 e.currentTarget.blur();
                 onOpen();
               }}
-              className="group relative overflow-hidden px-10 py-4 cursor-pointer"
+              className="group relative overflow-hidden px-10 py-4 cursor-pointer open-invite-shine"
               style={{
                 border: "1px solid var(--color-gold-border-md)",
               }}
