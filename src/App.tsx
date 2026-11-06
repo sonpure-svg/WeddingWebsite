@@ -61,20 +61,20 @@ import { OrnamentDivider } from "./ui";
 //   "/images/gallery/DSC07633.webp",
 // ];
 
-function preloadImages(images: string[]) {
-  images.forEach((src) => {
-    const img = new Image();
-    img.src = src;
-  });
-}
+// function preloadImages(images: string[]) {
+//   images.forEach((src) => {
+//     const img = new Image();
+//     img.src = src;
+//   });
+// }
 
-function preloadVideo(src: string) {
-  const video = document.createElement("video");
+// function preloadVideo(src: string) {
+//   const video = document.createElement("video");
 
-  video.preload = "metadata";
-  video.src = src;
-  video.load();
-}
+//   video.preload = "metadata";
+//   video.src = src;
+//   video.load();
+// }
 export default function App() {
   const [opened, setOpened] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -160,8 +160,14 @@ export default function App() {
   const toggleMusic = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
+
     if (audio.paused) {
-      audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+      audio.play()
+        .then(() => setPlaying(true))
+        .catch((error) => {
+          console.warn("Audio playback failed:", error);
+          setPlaying(false);
+        });
     } else {
       audio.pause();
       setPlaying(false);
@@ -191,7 +197,6 @@ export default function App() {
       {!loaderReady && (
         <Preloader
           onComplete={handleLoaderComplete}
-          videoRef={videoRef}
         />
       )}
       <LampAnimation active={opened} />

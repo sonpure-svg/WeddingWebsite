@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 interface PreloaderProps {
     onComplete: () => void;
-    videoRef: React.RefObject<HTMLVideoElement | null>;
+    //videoRef: React.RefObject<HTMLVideoElement | null>;
 }
 
 const criticalImages = [
@@ -109,51 +109,50 @@ function loadImage(src: string): Promise<void> {
 //     });
 // }
 
-function prepareHeroVideo(
-    video: HTMLVideoElement | null
-): Promise<void> {
-    return new Promise((resolve) => {
-        if (!video) {
-            resolve();
-            return;
-        }
+// function prepareHeroVideo(
+//     video: HTMLVideoElement | null
+// ): Promise<void> {
+//     return new Promise((resolve) => {
+//         if (!video) {
+//             resolve();
+//             return;
+//         }
 
-        let finished = false;
+//         let finished = false;
 
-        const finish = () => {
-            if (finished) return;
+//         const finish = () => {
+//             if (finished) return;
 
-            finished = true;
+//             finished = true;
 
-            window.clearTimeout(timeout);
+//             window.clearTimeout(timeout);
 
-            video.removeEventListener("canplay", finish);
-            video.removeEventListener("error", finish);
+//             video.removeEventListener("canplay", finish);
+//             video.removeEventListener("error", finish);
 
-            resolve();
-        };
+//             resolve();
+//         };
 
-        // Video already has enough data to begin playback.
-        if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
-            resolve();
-            return;
-        }
+//         // Video already has enough data to begin playback.
+//         if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+//             resolve();
+//             return;
+//         }
 
-        video.preload = "auto";
+//         video.preload = "auto";
 
-        video.addEventListener("canplay", finish);
-        video.addEventListener("error", finish);
+//         video.addEventListener("canplay", finish);
+//         video.addEventListener("error", finish);
 
-        // Do not keep guests waiting indefinitely on slow networks.
-        const timeout = window.setTimeout(finish, 8000);
+//         // Do not keep guests waiting indefinitely on slow networks.
+//         const timeout = window.setTimeout(finish, 8000);
 
-        video.load();
-    });
-}
+//         video.load();
+//     });
+// }
 
 export default function Preloader({
     onComplete,
-    videoRef,
 }: PreloaderProps) {
     const [progress, setProgress] = useState(0);
     const [visible, setVisible] = useState(true);
@@ -164,13 +163,14 @@ export default function Preloader({
 
         const startedAt = Date.now();
 
+
         const resources = [
             ...criticalImages.map((src) => loadImage(src)),
-            prepareHeroVideo(videoRef.current),
             document.fonts?.ready
                 ? document.fonts.ready.then(() => undefined).catch(() => undefined)
                 : Promise.resolve(),
         ];
+
 
         const total = resources.length;
         let loaded = 0;
@@ -224,7 +224,7 @@ export default function Preloader({
         return () => {
             cancelled = true;
         };
-    }, [onComplete, videoRef]);
+    }, [onComplete]);
 
     if (!visible) return null;
 
