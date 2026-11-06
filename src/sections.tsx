@@ -580,7 +580,7 @@ export function Hero({
         ref={videoRef}
         muted
         playsInline
-        preload="auto"
+        preload="none"
         poster="/images/couple/hero-portrait.webp"
         className="absolute inset-0 h-full w-full object-cover object-center"
         style={{
