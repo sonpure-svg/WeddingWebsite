@@ -204,16 +204,23 @@ function SectionHeading({
 export function Cover({
   opened,
   onOpen,
+  preloaderFinished,
 }: {
   opened: boolean;
   onOpen: () => void;
+  preloaderFinished: boolean;
 }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 60);
+    if (!preloaderFinished) return;
+
+    const t = setTimeout(() => {
+      setMounted(true);
+    }, 100);
+
     return () => clearTimeout(t);
-  }, []);
+  }, [preloaderFinished]);
 
   const step = (i: number) => ({
     opacity: mounted && !opened ? 1 : 0,
@@ -552,13 +559,7 @@ export function Cover({
 /* Hero                                                               */
 /* ------------------------------------------------------------------ */
 
-export function Hero({
-  videoRef,
-  opened,
-}: {
-  videoRef: React.RefObject<HTMLVideoElement | null>;
-  opened: boolean;
-}) {
+export function Hero({ opened }: { opened: boolean }) {
   const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
@@ -569,13 +570,13 @@ export function Hero({
 
     const timer = setTimeout(() => {
       setShowScroll(true);
-    }, 10000); // 10 seconds AFTER Open Invite
+    }, 6000); // 10 seconds AFTER Open Invite
 
     return () => clearTimeout(timer);
   }, [opened]);
   return (
     <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-black">
-      <video
+      {/* <video
         ref={videoRef}
         muted
         playsInline
@@ -591,7 +592,12 @@ export function Hero({
           src="/video/wedding-bg.mp4"
           type="video/mp4"
         />
-      </video>
+      </video> */}
+      {/* Royal Palace Background */}
+      <div
+        className={`hero-palace-background ${opened ? "hero-palace-active" : ""}`}
+        aria-hidden="true"
+      />
       <div className="absolute inset-0 z-10" style={{ background: "var(--color-black-42)" }} />
       <div className="relative z-20 flex w-full flex-col items-center px-6 text-center sm:px-10">
         <Reveal y={0} scale={0.82} duration={900}>
@@ -606,7 +612,7 @@ export function Hero({
           </div>
         </Reveal>
         <Reveal y={24} delay={150}>
-          <p className="mb-10 font-cinzel font-bold uppercase tracking-[0.65em]" style={{ fontSize: "clamp(0.58rem, 1.6vw, 0.6rem)", color: "var(--color-gold-accent)", transform: "scaleY(1.55)" }}>
+          <p className="mb-10 font-bold uppercase tracking-[0.65em]" style={{ fontSize: "clamp(0.58rem, 1.6vw, 0.6rem)", color: "var(--color-gold-accent)", transform: "scaleY(1.55)" }}>
             Celebrating Love & Tradition
           </p>
         </Reveal>
@@ -634,7 +640,7 @@ export function Hero({
         <div className="flex flex-col items-center">
 
           {/* Animated Arrow */}
-          <div className="scroll-arrow">
+          <div className="scroll-arrow font-bold">
             <svg
               stroke="currentColor"
               fill="none"
@@ -646,7 +652,7 @@ export function Hero({
               width="72"
               xmlns="http://www.w3.org/2000/svg"
               style={{
-                color: "#f2bd3791",
+                color: "#f1b723",
               }}
             >
               <path
@@ -655,9 +661,9 @@ export function Hero({
                 d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18"
               />
             </svg>
-            <span
+            <span className="font-bold"
               style={{
-                color: "#f2bd3791",
+                color: "#f1b723",
                 fontSize: "clamp(0.8rem, 1.2vw, 1rem)",
                 letterSpacing: "0.5em",
                 textTransform: "uppercase",

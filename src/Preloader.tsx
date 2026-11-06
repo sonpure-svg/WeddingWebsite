@@ -8,6 +8,7 @@ interface PreloaderProps {
 
 const criticalImages = [
     "/images/couple/invite-cover.jpg",
+    "/images/BG.png",
     "/images/couple/hero-portrait.webp",
     "/images/couple/couple.jpg",
     "/images/RDLogo.png",
@@ -71,42 +72,42 @@ function loadImage(src: string): Promise<void> {
     });
 }
 
-const loadVideo = (src: string): Promise<void> => {
-    return new Promise((resolve) => {
-        const video = document.createElement("video");
+// const loadVideo = (src: string): Promise<void> => {
+//     return new Promise((resolve) => {
+//         const video = document.createElement("video");
 
-        video.preload = "auto";
-        video.muted = true;
-        video.playsInline = true;
+//         video.preload = "auto";
+//         video.muted = true;
+//         video.playsInline = true;
 
-        const cleanup = () => {
-            video.removeEventListener("canplaythrough", handleReady);
-            video.removeEventListener("error", handleError);
-        };
+//         const cleanup = () => {
+//             video.removeEventListener("canplaythrough", handleReady);
+//             video.removeEventListener("error", handleError);
+//         };
 
-        const handleReady = () => {
-            cleanup();
-            resolve();
-        };
+//         const handleReady = () => {
+//             cleanup();
+//             resolve();
+//         };
 
-        const handleError = () => {
-            cleanup();
-            console.error("Hero video failed to load:", src);
-            resolve();
-        };
+//         const handleError = () => {
+//             cleanup();
+//             console.error("Hero video failed to load:", src);
+//             resolve();
+//         };
 
-        video.addEventListener("canplaythrough", handleReady, { once: true });
-        video.addEventListener("error", handleError, { once: true });
+//         video.addEventListener("canplaythrough", handleReady, { once: true });
+//         video.addEventListener("error", handleError, { once: true });
 
-        video.src = src;
-        video.load();
+//         video.src = src;
+//         video.load();
 
-        // Handle the case where the browser is already ready.
-        if (video.readyState >= 4) {
-            handleReady();
-        }
-    });
-};
+//         // Handle the case where the browser is already ready.
+//         if (video.readyState >= 4) {
+//             handleReady();
+//         }
+//     });
+// };
 
 // function loadVideoMetadata(src: string): Promise<void> {
 //     return new Promise((resolve) => {
@@ -202,8 +203,6 @@ export default function Preloader({
 
         const resources = [
             ...criticalImages.map((src) => loadImage(src)),
-
-            loadVideo("/video/wedding-bg.mp4"),
 
             document.fonts?.ready
                 ? document.fonts.ready.then(() => undefined).catch(() => undefined)
