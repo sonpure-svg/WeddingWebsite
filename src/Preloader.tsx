@@ -8,9 +8,8 @@ interface PreloaderProps {
 
 const criticalImages = [
     "/images/couple/invite-cover.jpg",
-    "/images/BG.png",
+    "/images/BG.webp",
     "/images/couple/hero-portrait.webp",
-    "/images/couple/couple.jpg",
     "/images/RDLogo.png",
     "/images/ganesha.png",
     "/images/venues/haldi.png",
@@ -32,6 +31,9 @@ const criticalImages = [
     "/images/gallery/DSC07620.webp",
     "/images/gallery/DSC07632.webp",
     "/images/gallery/DSC07633.webp",
+    "/images/family/Jyoti-Deepak-web.webp",
+    "/images/family/payal-web.webp",
+    "/images/family/cousins-web.webp",
 ];
 
 
@@ -250,40 +252,42 @@ export default function Preloader({
 
                     <div
                         style={{
-                            fontSize: "clamp(35px, 9vw, 55px)",
+                            fontSize: "clamp(20px, 7vw, 40px)",
+                            //fontFamily: "Georgia, serif",
+                            fontWeight: 400,
+                            letterSpacing: "-0.01em",
+                            whiteSpace: "nowrap",
+                            textShadow: "0 2px 25px rgba(200,164,93,0.15)",
+                            
+                        }}
+                    >
+                        This Art Is Created By
+                    </div>
+
+                    <div
+                        style={{
+                            fontSize: "clamp(55px, 9vw, 75px)",
                             fontFamily: "Georgia, serif",
                             fontWeight: 400,
                             letterSpacing: "-0.04em",
                             whiteSpace: "nowrap",
                             textShadow: "0 2px 25px rgba(200,164,93,0.15)",
+                            //paddingTop: "2px",
                         }}
                     >
-                        Rishabh
+                        RISHABH 
                     </div>
 
                     <div
                         style={{
-                            fontFamily: "Georgia, serif",
-                            fontSize: 27,
-                            fontStyle: "italic",
+                            fontSize: 20,
+                            letterSpacing: "0.3em",
                             color: "#c8a45d",
-                            margin: "2px 0",
+                            marginBottom: 22,
+                            paddingTop: "15px",
                         }}
                     >
-                        &amp;
-                    </div>
-
-                    <div
-                        style={{
-                            fontSize: "clamp(35px, 9vw, 55px)",
-                            fontFamily: "Georgia, serif",
-                            fontWeight: 400,
-                            letterSpacing: "-0.04em",
-                            whiteSpace: "nowrap",
-                            textShadow: "0 2px 25px rgba(200,164,93,0.15)",
-                        }}
-                    >
-                        Diksha
+                       Rishabh & Diksha
                     </div>
 
                     <div
