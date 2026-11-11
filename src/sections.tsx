@@ -617,7 +617,7 @@ export function Hero({ opened }: { opened: boolean }) {
           </p>
         </Reveal>
         <Reveal y={24} delay={300}>
-          <h1 className="font-display" style={{ fontSize: "clamp(2.4rem, 7vw, 5.8rem)", lineHeight: 1.08, letterSpacing: "-0.02em", maxWidth: "16ch", color: "var(--color-name-text)", textShadow: "0 2px 8px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.55)" }}>
+          <h1 className="font-display" style={{ fontFamily:"Lobster" ,fontSize: "clamp(2.8rem, 7vw, 6rem)", lineHeight: 1.08, letterSpacing: "-0.02em", maxWidth: "16ch", color: "var(--color-name-text)", textShadow: "0 2px 8px rgba(0,0,0,0.8), 0 8px 40px rgba(0,0,0,0.55)" }}>
             You Are Invited To Celebrate Love
           </h1>
         </Reveal>
